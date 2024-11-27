@@ -10,7 +10,7 @@
   },
   "nodemonConfig":{
     "watch": [
-      "src", "public"
+      "src", "data"
     ],
     "exec": "tsc && node ./dist/server.js",
     "ext": "ts,js,json"
