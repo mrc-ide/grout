@@ -1,0 +1,31 @@
+{
+  "name": "grout",
+  "version": "0.0.1",
+  "description": "Geo tile server",
+  "main": "server.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "nodemon",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "nodemonConfig":{
+    "watch": [
+      "src", "public"
+    ],
+    "exec": "tsc && node ./dist/server.js",
+    "ext": "ts,js,json"
+  },
+  "dependencies": {
+    "compression": "^1.7.5",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.9.3",
+    "nodemon": "^3.1.7",
+    "typescript": "^5.7.2"
+  }
+}
