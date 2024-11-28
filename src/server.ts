@@ -5,8 +5,10 @@ import * as path from "node:path";
 import {ConfigReader} from "./configReader";
 import {GroutConfig} from "./types";
 import {registerRoutes} from "./routes";
+import {initialiseLogging} from "./logging";
 
 const app = express();
+initialiseLogging(app);
 app.use(cors());
 app.use(compression({ level: 9 })); // Use best compression
 
