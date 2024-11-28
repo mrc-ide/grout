@@ -11,7 +11,7 @@ app.use(cors());
 app.use(compression({ level: 9 })); // Use best compression
 
 const rootDir = path.resolve(path.join(__dirname, ".."));
-const configReader = new ConfigReader(path.join(rootDir, "data"));
+const configReader = new ConfigReader(path.join(rootDir, "config"));
 const { port } = configReader.readConfigFile("grout.config.json") as GroutConfig;
 
 app.use("/", registerRoutes());
