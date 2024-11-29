@@ -4,7 +4,7 @@ import { Dict } from "./types";
 
 export const initialiseLogging = (app: Application) => {
     const customFormat = (
-        tokens: Dict<(req: Request, res: Response) => string>,
+        tokens: Dict<(req: Request, res: Response, header?: string) => string>,
         req: Request,
         res: Response
     ) => {
