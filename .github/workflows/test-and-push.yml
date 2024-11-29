@@ -18,4 +18,12 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build docker image
         run: ./docker/build
+      - name: Push SHA docker image
+        run: ./docker/push
+      - name: Run app in docker
+        run: ./docker/run
+      - name: Run unit and integration tests
+        run: npm run test
+      - name: Push branch docker tag
+        run: ./docker/push-branch-tag
 
