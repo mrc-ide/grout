@@ -4,7 +4,7 @@ import * as path from "path";
 export class ConfigReader {
     rootDir: string;
 
-    constructor(rootDir: string, overrides: Object = {}) {
+    constructor(rootDir: string) {
         this.rootDir = rootDir;
     }
 
