@@ -1,5 +1,5 @@
 import { describe, expect, test, vi } from "vitest";
-import {initialiseLogging} from "../src/logging";
+import {initialiseLogging} from "../../src/logging";
 
 const {mockMorganResult, mockMorgan } = vi.hoisted(() => {
     const mockMorganResult = {morgan: "mock result"};
@@ -7,7 +7,7 @@ const {mockMorganResult, mockMorgan } = vi.hoisted(() => {
     return {mockMorganResult, mockMorgan}
 });
 
-vi.mock("morgan", () => ({morgan: mockMorgan, default: mockMorgan}));
+vi.mock("morgan", () => ({default: mockMorgan}));
 
 describe("initialiseLogging", () => {
     test("registers morgan custom format", () => {
