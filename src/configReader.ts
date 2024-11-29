@@ -8,11 +8,11 @@ export class ConfigReader {
         this.rootDir = rootDir;
     }
 
-    readConfigFile(...filePath: string[]): Object | null {
+    readConfigFile(...filePath: string[]): object | null {
         const fullPath = [this.rootDir, ...filePath];
         const filename = path.join(...fullPath);
         if (fs.existsSync(filename)) {
-            const configText = fs.readFileSync(filename, { encoding: "utf-8" })
+            const configText = fs.readFileSync(filename, { encoding: "utf-8" });
             return { ...JSON.parse(configText) };
         }
         throw `File ${filename} does not exist`;

@@ -7,15 +7,15 @@ vi.mock("fs");
 
 beforeEach(() => {
     // reset the state of in-memory fs
-    vol.reset()
-})
+    vol.reset();
+});
 
-describe("ConfigReader",  () => {
+describe("ConfigReader", () => {
     test("can read config file", () => {
         const folder = "/testRoot/config";
         const path = `${folder}/grout.config.json`;
-        const testConfig = {port: 1234};
-        fs.mkdirSync(folder, {recursive: true});
+        const testConfig = { port: 1234 };
+        fs.mkdirSync(folder, { recursive: true });
         fs.writeFileSync(path, JSON.stringify(testConfig), {});
 
         const sut = new ConfigReader("/testRoot");
@@ -25,7 +25,8 @@ describe("ConfigReader",  () => {
 
     test("throws error if config file does not exist", () => {
         const sut = new ConfigReader("/testRoot");
-        expect(() => sut.readConfigFile("nonexistent.config.json"))
-            .toThrowError("File /testRoot/nonexistent.config.json does not exist");
+        expect(() =>
+            sut.readConfigFile("nonexistent.config.json")
+        ).toThrowError("File /testRoot/nonexistent.config.json does not exist");
     });
 });

@@ -5,4 +5,4 @@ export const registerRoutes = () => {
     const router = Router();
     router.get("/", IndexController.getIndex);
     return router;
-}
+};

@@ -1,7 +1,7 @@
 import { describe, expect, test } from "vitest";
 import { grout } from "./integrationTest";
 
-describe("index endpoint" , () => {
+describe("index endpoint", () => {
     test("returns package version", async () => {
         const response = await grout.get("/");
         expect(response.status).toBe(200);

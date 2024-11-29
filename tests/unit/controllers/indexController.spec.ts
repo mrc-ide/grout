@@ -1,5 +1,5 @@
 import { describe, expect, test, vi } from "vitest";
-import {IndexController} from "../../../src/controllers/indexController";
+import { IndexController } from "../../../src/controllers/indexController";
 
 vi.stubEnv("npm_package_version", "1.2.3");
 
