@@ -1,5 +1,13 @@
 name: test-and-push,
-on: [push]
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - '*'
+env:
+  BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
 jobs:
   test-and-push:
     runs-on: ubuntu-latest
