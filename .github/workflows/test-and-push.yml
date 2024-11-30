@@ -33,5 +33,5 @@ jobs:
       - name: Run unit and integration tests
         run: npm run test
       - name: Push branch docker tag
-        run: ./docker/push-branch-tag
+        run: ./docker/push_branch_tag
 
