@@ -6,6 +6,7 @@ import { ConfigReader } from "./configReader";
 import { GroutConfig } from "./types";
 import { registerRoutes } from "./routes";
 import { initialiseLogging } from "./logging";
+import {discoverTileDatabases} from "./db/TileDatabase";
 
 const app = express();
 initialiseLogging(app);
@@ -19,6 +20,8 @@ const { port } = configReader.readConfigFile(
 ) as GroutConfig;
 
 app.use("/", registerRoutes());
+
+discoverTileDatabases(path.resolve(path.join(rootDir, "data")));
 
 app.listen(port, () => {
     console.log(`Grout is running on port ${port}`);
