@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+        <script src="https://unpkg.com/leaflet-vector-tile-layer@0.16.1/dist/VectorTileLayer.umd.js"></script>
+        <style>
+            #map {
+                width: 1500px;
+                height: 1000px;
+                border-style: solid;
+                border-color: black;
+                margin: 4px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="map"></div>
+        <script>
+            const getStyle = () => {
+                console.log("getting style");
+                return {
+                    fillColor: "#ffffff",
+                    color: "#000000"
+                };
+            };
+            const map = L.map("map").setView({lon: 0, lat: 0}, 2);
+
+            const backgroundLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}).addTo(map);
+
+            const options = {
+                style: getStyle,
+                interactive: true,
+                maxNativeZoom: 10,
+                tms: true, // y values are inverted without this!
+            };
+            const tileLayer = VectorTileLayer("http://localhost:5000/tile/gadm41/admin0/{z}/{x}/{-y}", options).addTo(map);
+            console.log("added tile to map")
+        </script>
+    </body>
+</html>

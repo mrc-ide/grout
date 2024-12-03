@@ -1,12 +1,12 @@
 import * as fs from "fs";
 import * as path from "node:path";
 import {TileDatabase} from "./db/tileDatabase";
-import {Dirent} from "node:fs";
-// TODO: include a metadata endpoint with all discovered dbs!
-// TODO: rediscover without restart??
+import {TileDataset} from "./types/app";
+import {Dict} from "./types/utils";
 
-// discover tile databases. create them and return a dictionary of dictionaries of them
-export const discoverTileDatasets = (root: string) => {
+// TODO: include a metadata endpoint with all discovered dbs!
+
+export const discoverTileDatasets = (root: string): Dict<TileDataset> => {
     // We expect to find tile databases in a single nesting of folders under root, where each folder has the dataset name,
     // and each *.mbtiles files in the folder has the level name. These are the dataset and level identifiers which should
     // be used in urls to access the tile data
