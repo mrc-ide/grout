@@ -7,11 +7,11 @@
         <script src="https://unpkg.com/leaflet-vector-tile-layer@0.16.1/dist/VectorTileLayer.umd.js"></script>
         <style>
             #map {
-                width: 1500px;
-                height: 1000px;
-                border-style: solid;
-                border-color: black;
-                margin: 4px;
+                width: 100vw;
+                height: 100vh;
+                position: absolute;
+                top: 0;
+                left: 0;
             }
         </style>
     </head>
@@ -19,24 +19,55 @@
         <div id="map"></div>
         <script>
             const getStyle = () => {
-                console.log("getting style");
                 return {
+                    weight: 1,
                     fillColor: "#ffffff",
                     color: "#000000"
                 };
             };
-            const map = L.map("map").setView({lon: 0, lat: 0}, 2);
+            const map = L.map("map").setView({lon: 0, lat: 0}, 3);
+            map.options.minZoom = 2;
 
-            const backgroundLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}).addTo(map);
+            // Background layer
+            const attribution = "Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ; " +
+                "Boundaries: <a href='https://gadm.org' target='_blank'>GADM</a> version 4.1";
+            L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}", {
+                attribution }
+            ).addTo(map);
 
+            // shared options
             const options = {
-                style: getStyle,
                 interactive: true,
                 maxNativeZoom: 10,
                 tms: true, // y values are inverted without this!
             };
-            const tileLayer = VectorTileLayer("http://localhost:5000/tile/gadm41/admin0/{z}/{x}/{-y}", options).addTo(map);
-            console.log("added tile to map")
+
+            // Admin1 layer - assign shade of blue based on first letter of name!
+            const admin1Options = {
+                style: (feature, layerName) => {
+                    const shade = Math.min((feature.properties["NAME_1"].charCodeAt(0) - 65)/26, 1) * 255;
+                    return {
+                        fillColor: `rgb(${shade}, ${shade}, 255)`,
+                        fillOpacity: 0.5,
+                        color: "#cccccc",
+                        weight: 1
+                    }
+                },
+                ...options
+            };
+            VectorTileLayer("http://localhost:5000/tile/gadm41/admin1/{z}/{x}/{-y}", admin1Options).addTo(map);
+
+            // Admin0 layer
+            const admin0Options = {
+                style: {
+                    weight: 1,
+                    fill: false,
+                    color: "#000000"
+                },
+                ...options
+            };
+            VectorTileLayer("http://localhost:5000/tile/gadm41/admin0/{z}/{x}/{-y}", admin0Options).addTo(map);
+
         </script>
     </body>
 </html>
