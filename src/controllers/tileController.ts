@@ -17,7 +17,8 @@ export class TileController {
         const tileData = await db.getTileData(parseInt(z), parseInt(x), parseInt(y));
         if (tileData) {
             res.writeHead(200, {
-                "Content-Type": "application/octet-stream"
+                "Content-Type": "application/octet-stream",
+                "Content-Encoding": "gzip" // TODO: shouldn't compression middleware add this?
             }).end(tileData);
         } else {
             res.writeHead(404).end();
