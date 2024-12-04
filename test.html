@@ -18,15 +18,10 @@
     <body>
         <div id="map"></div>
         <script>
-            const getStyle = () => {
-                return {
-                    weight: 1,
-                    fillColor: "#ffffff",
-                    color: "#000000"
-                };
-            };
             const map = L.map("map").setView({lon: 0, lat: 0}, 3);
             map.options.minZoom = 2;
+
+            const nameProp = "NAME_1";
 
             // Background layer
             const attribution = "Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ; " +
@@ -45,7 +40,7 @@
             // Admin1 layer - assign shade of blue based on first letter of name!
             const admin1Options = {
                 style: (feature, layerName) => {
-                    const shade = Math.min((feature.properties["NAME_1"].charCodeAt(0) - 65)/26, 1) * 255;
+                    const shade = Math.min((feature.properties[nameProp].charCodeAt(0) - 65)/26, 1) * 255;
                     return {
                         fillColor: `rgb(${shade}, ${shade}, 255)`,
                         fillOpacity: 0.5,
@@ -55,7 +50,15 @@
                 },
                 ...options
             };
-            VectorTileLayer("http://localhost:5000/tile/gadm41/admin1/{z}/{x}/{-y}", admin1Options).addTo(map);
+            VectorTileLayer("http://localhost:5000/tile/gadm41/admin1/{z}/{x}/{-y}", admin1Options)
+                .on('mouseover', function(e) {
+                    const name = e.layer.properties[nameProp];
+                    L.popup()
+                        .setContent(name)
+                        .setLatLng(e.latlng)
+                        .openOn(map);
+                })
+                .addTo(map);
 
             // Admin0 layer
             const admin0Options = {
