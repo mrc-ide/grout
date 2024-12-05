@@ -11,10 +11,13 @@ export class TileController {
             y
         } = req.params;
         const { tileDatasets } = req.app.locals as AppLocals;
-        const db = tileDatasets[dataset][level];
-        // TODO: error if db not found
 
-        const tileData = await db.getTileData(parseInt(z), parseInt(x), parseInt(y));
+        let tileData = null;
+        if (tileDatasets[dataset] && tileDatasets[dataset][level]) {
+            const db = tileDatasets[dataset][level];
+            tileData = await db.getTileData(parseInt(z), parseInt(x), parseInt(y));
+        }
+
         if (tileData) {
             res.writeHead(200, {
                 "Content-Type": "application/octet-stream",
