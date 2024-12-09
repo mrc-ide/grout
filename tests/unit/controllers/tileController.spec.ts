@@ -9,9 +9,11 @@ const params = {
     y: "2"
 };
 
-const mockTileData = "some fake tile data"
+const mockTileData = "some fake tile data";
 const mockDb = {
-    getTileData: vi.fn().mockImplementation(async (z, x, y) => z === 0 ? null : mockTileData)
+    getTileData: vi
+        .fn()
+        .mockImplementation(async (z, x, y) => (z === 0 ? null : mockTileData))
 };
 const mockRequest = {
     params,
@@ -43,7 +45,10 @@ describe("TileController", () => {
             "Content-Type": "application/octet-stream",
             "Content-Encoding": "gzip"
         };
-        expect(mockResponse.writeHead).toHaveBeenCalledWith(200, expectedHeaders);
+        expect(mockResponse.writeHead).toHaveBeenCalledWith(
+            200,
+            expectedHeaders
+        );
         expect(mockResponse.end).toHaveBeenCalledWith(mockTileData);
     });
 
@@ -55,11 +60,11 @@ describe("TileController", () => {
 
     test("returns 404 if dataset not found", async () => {
         const requestUnknownDataset = {
-          ...mockRequest,
-          params: {
-              ...mockRequest.params,
-              dataset: "notadataset"
-          }
+            ...mockRequest,
+            params: {
+                ...mockRequest.params,
+                dataset: "notadataset"
+            }
         };
         await expect404Response(requestUnknownDataset);
     });

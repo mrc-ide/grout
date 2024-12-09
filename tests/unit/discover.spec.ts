@@ -1,6 +1,6 @@
 import { describe, expect, test, vi, beforeEach } from "vitest";
 import { fs, vol } from "memfs";
-import {discoverTileDatasets} from "../../src/discover";
+import { discoverTileDatasets } from "../../src/discover";
 
 // tell vitest to use fs mock from __mocks__ folder
 vi.mock("fs");
@@ -40,7 +40,7 @@ describe("discoverTileDatasets", () => {
         expect(result).toStrictEqual({
             dataset1: {
                 level0: { path: "/data/dataset1/level0.mbtiles" },
-                level1: { path: "/data/dataset1/level1.MBTILES" },
+                level1: { path: "/data/dataset1/level1.MBTILES" }
             },
             dataset2: {
                 level2: { path: "/data/dataset2/level2.mbtiles" }
@@ -48,10 +48,22 @@ describe("discoverTileDatasets", () => {
         });
 
         expect(consoleLogSpy).toHaveBeenCalledTimes(4);
-        expect(consoleLogSpy).toHaveBeenNthCalledWith(1, "Found tile datasets:");
-        expect(consoleLogSpy).toHaveBeenNthCalledWith(2, "dataset1/level0.mbtiles");
-        expect(consoleLogSpy).toHaveBeenNthCalledWith(3, "dataset1/level1.MBTILES");
-        expect(consoleLogSpy).toHaveBeenNthCalledWith(4, "dataset2/level2.mbtiles");
+        expect(consoleLogSpy).toHaveBeenNthCalledWith(
+            1,
+            "Found tile datasets:"
+        );
+        expect(consoleLogSpy).toHaveBeenNthCalledWith(
+            2,
+            "dataset1/level0.mbtiles"
+        );
+        expect(consoleLogSpy).toHaveBeenNthCalledWith(
+            3,
+            "dataset1/level1.MBTILES"
+        );
+        expect(consoleLogSpy).toHaveBeenNthCalledWith(
+            4,
+            "dataset2/level2.mbtiles"
+        );
 
         expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
