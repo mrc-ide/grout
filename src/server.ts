@@ -7,6 +7,7 @@ import { GroutConfig } from "./types/app";
 import { registerRoutes } from "./routes";
 import { initialiseLogging } from "./logging";
 import { discoverTileDatasets } from "./discover";
+import { handleError } from "../errors/handleError";
 
 const app = express();
 initialiseLogging(app);
@@ -28,6 +29,7 @@ Object.assign(app.locals, {
 });
 
 app.use("/", registerRoutes());
+app.use(handleError);
 
 app.listen(port, () => {
     console.log(`Grout is running on port ${port}`);
