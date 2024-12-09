@@ -3,9 +3,10 @@ import cors from "cors";
 import express from "express";
 import * as path from "node:path";
 import { ConfigReader } from "./configReader";
-import { GroutConfig } from "./types";
+import { GroutConfig } from "./types/app";
 import { registerRoutes } from "./routes";
 import { initialiseLogging } from "./logging";
+import { discoverTileDatasets } from "./discover";
 
 const app = express();
 initialiseLogging(app);
@@ -17,6 +18,14 @@ const configReader = new ConfigReader(path.join(rootDir, "config"));
 const { port } = configReader.readConfigFile(
     "grout.config.json"
 ) as GroutConfig;
+
+const tileDatasets = discoverTileDatasets(
+    path.resolve(path.join(rootDir, "data"))
+);
+
+Object.assign(app.locals, {
+    tileDatasets
+});
 
 app.use("/", registerRoutes());
 

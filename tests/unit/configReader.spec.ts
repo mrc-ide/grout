@@ -16,7 +16,7 @@ describe("ConfigReader", () => {
         const path = `${folder}/grout.config.json`;
         const testConfig = { port: 1234 };
         fs.mkdirSync(folder, { recursive: true });
-        fs.writeFileSync(path, JSON.stringify(testConfig), {});
+        fs.writeFileSync(path, JSON.stringify(testConfig));
 
         const sut = new ConfigReader("/testRoot");
         const result = sut.readConfigFile("config", "grout.config.json");
