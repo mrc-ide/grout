@@ -1,18 +1,19 @@
 import { describe, expect, test, vi, beforeEach } from "vitest";
-import {TileDatabase} from "../../../src/db/tileDatabase";
+import { TileDatabase } from "../../../src/db/tileDatabase";
 
 const { mockDatabaseConstructor, mockDatabase } = vi.hoisted(() => {
     const mockDatabase = {
         get: vi.fn()
     };
-    const mockDatabaseConstructor = vi.fn().mockImplementation(() => mockDatabase);
+    const mockDatabaseConstructor = vi
+        .fn()
+        .mockImplementation(() => mockDatabase);
     return { mockDatabaseConstructor, mockDatabase };
 });
 vi.mock("sqlite3", () => ({
     Database: mockDatabaseConstructor,
     OPEN_READONLY: 99
 }));
-
 
 describe("TileDatabase", () => {
     beforeEach(() => {

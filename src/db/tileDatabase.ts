@@ -1,5 +1,5 @@
 import * as sqlite3 from "sqlite3";
-import {TilesRow} from "../types/db";
+import { TilesRow } from "../types/db";
 
 export class TileDatabase {
     db: sqlite3.Database;
@@ -22,7 +22,7 @@ export class TileDatabase {
                         resolve((row as TilesRow).tile_data);
                     }
                 }
-            )
+            );
         });
     }
 }

@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { IndexController } from "./controllers/indexController";
-import {TileController} from "./controllers/tileController";
+import { TileController } from "./controllers/tileController";
 
 export const registerRoutes = () => {
     const router = Router();

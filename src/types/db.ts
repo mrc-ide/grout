@@ -1,3 +1,3 @@
 export interface TilesRow {
-    tile_data: any
+    tile_data: any;
 }

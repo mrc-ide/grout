@@ -6,7 +6,7 @@ import { ConfigReader } from "./configReader";
 import { GroutConfig } from "./types/app";
 import { registerRoutes } from "./routes";
 import { initialiseLogging } from "./logging";
-import {discoverTileDatasets} from "./discover";
+import { discoverTileDatasets } from "./discover";
 
 const app = express();
 initialiseLogging(app);
@@ -19,7 +19,9 @@ const { port } = configReader.readConfigFile(
     "grout.config.json"
 ) as GroutConfig;
 
-const tileDatasets = discoverTileDatasets(path.resolve(path.join(rootDir, "data")));
+const tileDatasets = discoverTileDatasets(
+    path.resolve(path.join(rootDir, "data"))
+);
 
 Object.assign(app.locals, {
     tileDatasets
