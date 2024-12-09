@@ -7,7 +7,7 @@ import { GroutConfig } from "./types/app";
 import { registerRoutes } from "./routes";
 import { initialiseLogging } from "./logging";
 import { discoverTileDatasets } from "./discover";
-import { handleError } from "../errors/handleError";
+import { handleError } from "./errors/handleError";
 
 const app = express();
 initialiseLogging(app);

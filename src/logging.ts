@@ -29,9 +29,9 @@ export const initialiseLogging = (app: Application) => {
             tokens.res(req, res, "content-length"),
             "-",
             tokens["response-time"](req, res), "ms",
-            tokens["error-type"](req),
-            tokens["error-detail"](req),
-            tokens["error-stack"](req)
+            tokens["error-type"](req, res),
+            tokens["error-detail"](req, res),
+            tokens["error-stack"](req, res)
         ].join(" ");
     };
 
