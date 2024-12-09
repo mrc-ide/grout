@@ -5,9 +5,9 @@ import { TileDataset } from "./types/app";
 import { Dict } from "./types/utils";
 
 export const discoverTileDatasets = (root: string): Dict<TileDataset> => {
-    // We expect to find tile databases in a single nesting of folders under root, where each folder has the dataset name,
-    // and each *.mbtiles files in the folder has the level name. These are the dataset and level identifiers which should
-    // be used in urls to access the tile data
+    // We expect to find tile databases in a single nesting of folders under root, where each folder has the dataset
+    // name, and each *.mbtiles files in the folder has the level name. These are the dataset and level identifiers
+    // which should be used in urls to access the tile data.
     const folders = fs
         .readdirSync(root, { withFileTypes: true })
         .filter((entry) => entry.isDirectory())
