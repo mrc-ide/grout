@@ -1,0 +1,43 @@
+{
+  "name": "grout",
+  "version": "0.0.1",
+  "description": "Geo tile server",
+  "main": "server.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "nodemon",
+    "prod": "node dist/server.js",
+    "test": "vitest",
+    "lint": "eslint",
+    "lint-fix": "eslint --fix"
+  },
+  "nodemonConfig": {
+    "watch": [
+      "src",
+      "data"
+    ],
+    "exec": "tsc && node ./dist/server.js",
+    "ext": "ts,js,json"
+  },
+  "dependencies": {
+    "compression": "^1.7.5",
+    "cors": "^2.8.5",
+    "express": "^4.21.1",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.9.3",
+    "eslint": "^9.15.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "memfs": "^4.14.0",
+    "nodemon": "^3.1.7",
+    "prettier": "^3.4.1",
+    "supertest": "^7.0.0",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.16.0",
+    "vitest": "^2.1.6"
+  }
+}

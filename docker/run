@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -ex
+HERE=$(dirname $0)
+. $HERE/common
+
+docker run -d --rm \
+    --pull=always \
+    -p 5000:5000 \
+    --name=$PACKAGE_NAME \
+    $TAG_SHA

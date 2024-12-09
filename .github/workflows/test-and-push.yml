@@ -1,0 +1,37 @@
+name: test-and-push,
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - '*'
+env:
+  BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+jobs:
+  test-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+      - name: Install dependencies
+        run: npm ci
+      - name: Login to GHCR (GitHub Packages)
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build docker image
+        run: ./docker/build
+      - name: Push SHA docker image
+        run: ./docker/push
+      - name: Run app in docker
+        run: ./docker/run
+      - name: Run unit and integration tests
+        run: npm run test
+      - name: Push branch docker tag
+        run: ./docker/push_branch_tag
+

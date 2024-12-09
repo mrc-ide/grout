@@ -1,0 +1,11 @@
+REGISTRY=ghcr.io
+PACKAGE_ORG=mrc-ide
+PACKAGE_NAME=grout
+GIT_SHA=$(git -C "$PACKAGE_ROOT" rev-parse --short=7 HEAD)
+if [[ -v "BRANCH_NAME" ]]; then
+    GIT_BRANCH=${BRANCH_NAME}
+else
+    GIT_BRANCH=$(git symbolic-ref --short HEAD)
+fi
+TAG_SHA="${REGISTRY}/${PACKAGE_ORG}/${PACKAGE_NAME}:${GIT_SHA}"
+TAG_BRANCH="${REGISTRY}/${PACKAGE_ORG}/${PACKAGE_NAME}:${GIT_BRANCH}"
