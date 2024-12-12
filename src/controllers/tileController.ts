@@ -1,8 +1,7 @@
 import {NextFunction, Request, Response} from "express";
 import {AppLocals} from "../types/app";
 import asyncControllerHandler from "../errors/asyncControllerHandler";
-import {GroutError} from "../errors/groutError";
-import {ErrorType} from "../errors/errorType";
+import notFound from "../errors/notFound";
 
 export class TileController {
     static getTile = async (req: Request, res: Response, next: NextFunction) => {
@@ -11,8 +10,6 @@ export class TileController {
             const {tileDatasets} = req.app.locals as AppLocals;
 
             // TODO: check coords params and throw 400 GroutError if not ints
-            // TODO: also throw error if requested dataset or level not found
-            // TODO: also return JSON response if route is not matched (always return JSON response in all cases!)
             let tileData = null;
             if (tileDatasets[dataset] && tileDatasets[dataset][level]) {
                 const db = tileDatasets[dataset][level];
@@ -29,7 +26,7 @@ export class TileController {
                     "Content-Encoding": "gzip"
                 }).end(tileData);
             } else {
-                res.writeHead(404).end();
+                throw notFound(req);
             }
         });
     };
