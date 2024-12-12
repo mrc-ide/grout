@@ -1,7 +1,7 @@
 import { describe, expect, test, vi, beforeEach } from "vitest";
 import { TileController } from "../../../src/controllers/tileController";
-import {GroutError} from "../../../src/errors/groutError";
-import {ErrorType} from "../../../src/errors/errorType";
+import { GroutError } from "../../../src/errors/groutError";
+import { ErrorType } from "../../../src/errors/errorType";
 
 const params = {
     dataset: "testDataset",
@@ -60,12 +60,24 @@ describe("TileController", () => {
     const expectThrowsNotFound = async (request: any) => {
         await TileController.getTile(request, mockResponse, mockNext);
         // expect the async controller handler to have been used, so the error will be caught and passed to next
-        expect(mockNext).toHaveBeenCalledWith(new GroutError("Route not found: /mockUrl", 404, ErrorType.NOT_FOUND));
+        expect(mockNext).toHaveBeenCalledWith(
+            new GroutError(
+                "Route not found: /mockUrl",
+                404,
+                ErrorType.NOT_FOUND
+            )
+        );
     };
 
     const expectThrowsBadRequest = async (request: any, badParam: string) => {
         await TileController.getTile(request, mockResponse, mockNext);
-        expect(mockNext).toHaveBeenCalledWith(new GroutError(`"${badParam}" is not an integer`, 400, ErrorType.BAD_REQUEST));
+        expect(mockNext).toHaveBeenCalledWith(
+            new GroutError(
+                `"${badParam}" is not an integer`,
+                400,
+                ErrorType.BAD_REQUEST
+            )
+        );
     };
 
     test("returns 404 if dataset not found", async () => {
@@ -102,26 +114,35 @@ describe("TileController", () => {
     });
 
     test("returns 400 if non-integer z, x, or y", async () => {
-        await expectThrowsBadRequest({
-            ...mockRequest,
-            params: {
-                ...mockRequest.params,
-                z: "abc"
-            }
-        }, "abc");
-        await expectThrowsBadRequest({
-            ...mockRequest,
-            params: {
-                ...mockRequest.params,
-                x: "1a"
-            }
-        }, "1a");
-        await expectThrowsBadRequest({
-            ...mockRequest,
-            params: {
-                ...mockRequest.params,
-                y: "1.2"
-            }
-        }, "1.2");
+        await expectThrowsBadRequest(
+            {
+                ...mockRequest,
+                params: {
+                    ...mockRequest.params,
+                    z: "abc"
+                }
+            },
+            "abc"
+        );
+        await expectThrowsBadRequest(
+            {
+                ...mockRequest,
+                params: {
+                    ...mockRequest.params,
+                    x: "1a"
+                }
+            },
+            "1a"
+        );
+        await expectThrowsBadRequest(
+            {
+                ...mockRequest,
+                params: {
+                    ...mockRequest.params,
+                    y: "1.2"
+                }
+            },
+            "1.2"
+        );
     });
 });

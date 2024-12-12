@@ -1,4 +1,4 @@
-import {ErrorType} from "./errorType";
+import { ErrorType } from "./errorType";
 
 export class GroutError extends Error {
     status: number;

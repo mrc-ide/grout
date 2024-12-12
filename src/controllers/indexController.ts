@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import {jsonResponseSuccess} from "../jsonResponse";
+import { jsonResponseSuccess } from "../jsonResponse";
 
 export class IndexController {
     static getIndex = (_req: Request, res: Response) => {

@@ -23,9 +23,7 @@ export const jsonResponseError = (
     addContentType(res);
     const responseObject = {
         status: "failure",
-        errors: [
-            { error, detail }
-        ],
+        errors: [{ error, detail }],
         data: null
     };
     res.status(httpStatus);
