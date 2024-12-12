@@ -1,5 +1,7 @@
 import { describe, expect, test, vi, beforeEach } from "vitest";
 import { TileController } from "../../../src/controllers/tileController";
+import {GroutError} from "../../../src/errors/groutError";
+import {ErrorType} from "../../../src/errors/errorType";
 
 const params = {
     dataset: "testDataset",
@@ -17,6 +19,7 @@ const mockDb = {
 };
 const mockRequest = {
     params,
+    url: "/mockUrl",
     app: {
         locals: {
             tileDatasets: {
@@ -33,13 +36,15 @@ const mockResponse = {
 } as any;
 mockResponse.writeHead = vi.fn().mockImplementation(() => mockResponse);
 
+const mockNext = vi.fn();
+
 describe("TileController", () => {
     beforeEach(() => {
         vi.clearAllMocks();
     });
 
     test("adds expected tile data and headers to response", async () => {
-        await TileController.getTile(mockRequest, mockResponse);
+        await TileController.getTile(mockRequest, mockResponse, mockNext);
         expect(mockDb.getTileData).toHaveBeenCalledWith(3, 1, 2);
         const expectedHeaders = {
             "Content-Type": "application/octet-stream",
@@ -52,10 +57,15 @@ describe("TileController", () => {
         expect(mockResponse.end).toHaveBeenCalledWith(mockTileData);
     });
 
-    const expect404Response = async (request: any) => {
-        await TileController.getTile(request, mockResponse);
-        expect(mockResponse.writeHead).toHaveBeenCalledWith(404);
-        expect(mockResponse.end).toHaveBeenCalledWith();
+    const expectThrowsNotFound = async (request: any) => {
+        await TileController.getTile(request, mockResponse, mockNext);
+        // expect the async controller handler to have been used, so the error will be caught and passed to next
+        expect(mockNext).toHaveBeenCalledWith(new GroutError("Route not found: /mockUrl", 404, ErrorType.NOT_FOUND));
+    };
+
+    const expectThrowsBadRequest = async (request: any, badParam: string) => {
+        await TileController.getTile(request, mockResponse, mockNext);
+        expect(mockNext).toHaveBeenCalledWith(new GroutError(`"${badParam}" is not an integer`, 400, ErrorType.BAD_REQUEST));
     };
 
     test("returns 404 if dataset not found", async () => {
@@ -66,7 +76,7 @@ describe("TileController", () => {
                 dataset: "notadataset"
             }
         };
-        await expect404Response(requestUnknownDataset);
+        await expectThrowsNotFound(requestUnknownDataset);
     });
 
     test("returns 404 if level not found", async () => {
@@ -77,7 +87,7 @@ describe("TileController", () => {
                 level: "notalevel"
             }
         };
-        await expect404Response(requestUnknownLevel);
+        await expectThrowsNotFound(requestUnknownLevel);
     });
 
     test("returns 404 if tile not found", async () => {
@@ -88,6 +98,30 @@ describe("TileController", () => {
                 z: "0"
             }
         };
-        await expect404Response(requestUnknownTile);
+        await expectThrowsNotFound(requestUnknownTile);
+    });
+
+    test("returns 400 if non-integer z, x, or y", async () => {
+        await expectThrowsBadRequest({
+            ...mockRequest,
+            params: {
+                ...mockRequest.params,
+                z: "abc"
+            }
+        }, "abc");
+        await expectThrowsBadRequest({
+            ...mockRequest,
+            params: {
+                ...mockRequest.params,
+                x: "1a"
+            }
+        }, "1a");
+        await expectThrowsBadRequest({
+            ...mockRequest,
+            params: {
+                ...mockRequest.params,
+                y: "1.2"
+            }
+        }, "1.2");
     });
 });

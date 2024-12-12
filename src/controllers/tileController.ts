@@ -35,7 +35,7 @@ export class TileController {
                     "Content-Encoding": "gzip"
                 }).end(tileData);
             } else {
-                throw notFound(req);
+                notFound(req);
             }
         });
     };
