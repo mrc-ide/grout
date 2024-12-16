@@ -7,5 +7,6 @@ docker run -d --rm \
     --pull=always \
     -p 5000:5000 \
     -v ./data:/data \
+    -e GROUT_ERROR_TEST=true \
     --name=$PACKAGE_NAME \
     $TAG_SHA

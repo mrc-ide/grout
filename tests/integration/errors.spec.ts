@@ -1,5 +1,6 @@
-import { describe, expect, test, vi } from "vitest";
+import { describe, expect, test, beforeAll, afterAll } from "vitest";
 import {grout} from "./integrationTest";
+import * as fs from "fs";
 
 const expect404Response = async (url: string) => {
     const response = await grout.get(url);
@@ -58,6 +59,8 @@ describe("400 error response", () => {
     });
 })
 
-/*describe("500 error response", () => {
-    // Mess with db file?
-});*/
+describe("500 error response", () => {
+    test("when db file is inaccessible", async () => {
+       await expect400Response("/tile/gadm41/admin1/3/1/4", "\"4.3\" is not an integer");
+    });
+});
