@@ -9,7 +9,7 @@ const { mockMorganResult, mockMorgan, mockToken } = vi.hoisted(() => {
     return { mockMorganResult, mockMorgan, mockToken };
 });
 
-vi.mock("morgan", () => ({ default: mockMorgan, }));
+vi.mock("morgan", () => ({ default: mockMorgan }));
 
 describe("initialiseLogging", () => {
     test("registers morgan custom format", () => {

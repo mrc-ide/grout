@@ -1,15 +1,16 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { uid } from "uid";
 import { GroutError } from "./groutError";
 import { ErrorType } from "./errorType";
 import { reqWithError } from "../logging";
 import { jsonResponseError } from "../jsonResponse";
 
+// We need to include the unused next var for this to be used correctly as an error handler
 export const handleError = (
     err: Error,
     req: Request,
     res: Response,
-    _: Function
+    _: NextFunction // eslint-disable-line @typescript-eslint/no-unused-vars
 ) => {
     const groutError = err instanceof GroutError;
 

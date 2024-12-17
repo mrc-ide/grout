@@ -11,7 +11,9 @@ export const registerRoutes = () => {
     // provide an endpoint we can use to test 500 response behaviour by throwing an "unexpected error" - but only if we
     // are running in a non-production mode indicated by an env var
     if (process.env.GROUT_ERROR_TEST) {
-        router.get("/error-test", () => { throw Error("Testing error behaviour"); });
+        router.get("/error-test", () => {
+            throw Error("Testing error behaviour");
+        });
     }
 
     // Throw 404 error for any unmatched routes

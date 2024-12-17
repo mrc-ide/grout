@@ -32,6 +32,6 @@ describe("registerRoutes", () => {
             "/tile/:dataset/:level/:z/:x/:y",
             TileController.getTile
         );
-        expect(mockRouter.use).toHaveBeenCalledWith(notFound)
+        expect(mockRouter.use).toHaveBeenCalledWith(notFound);
     });
 });

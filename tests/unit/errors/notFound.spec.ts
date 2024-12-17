@@ -1,6 +1,6 @@
 import { describe, expect, test, vi, beforeEach } from "vitest";
 import notFound from "../../../src/errors/notFound";
-import {ErrorType} from "../../../src/errors/errorType";
+import { ErrorType } from "../../../src/errors/errorType";
 
 describe("notFound", () => {
     test("throws expected error", () => {

@@ -15,6 +15,9 @@ describe("IndexController", () => {
     test("returns expected content and status", () => {
         const mockResponse = {};
         IndexController.getIndex({}, mockResponse);
-        expect(mockJsonResponseSuccess).toHaveBeenCalledWith({ version: "1.2.3" }, mockResponse);
+        expect(mockJsonResponseSuccess).toHaveBeenCalledWith(
+            { version: "1.2.3" },
+            mockResponse
+        );
     });
 });
