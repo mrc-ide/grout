@@ -12,7 +12,9 @@ const consoleWarnSpy = vi.spyOn(console, "warn");
 const mockDatabaseConstructor = vi.hoisted(() => {
     // Make a mock Tile db constructor that returns an object containing its path constructor param
     // so we can test the correctly constructoed dbs are returned in the dictionary by the discover method.
-    return vi.fn().mockImplementation((path: string) => ({ path, open: vi.fn() }));
+    return vi
+        .fn()
+        .mockImplementation((path: string) => ({ path, open: vi.fn() }));
 });
 
 vi.mock("../../src/db/tileDatabase", () => ({
@@ -37,11 +39,17 @@ describe("discoverTileDatasets", () => {
         fs.writeFileSync(`${dataRoot}/${ds2}/notadatabase.txt`, "red herring");
 
         const result = await discoverTileDatasets(dataRoot);
-        expect(result.dataset1.level0.path).toBe("/data/dataset1/level0.mbtiles");
+        expect(result.dataset1.level0.path).toBe(
+            "/data/dataset1/level0.mbtiles"
+        );
         expect(result.dataset1.level0.open).toHaveBeenCalledTimes(1);
-        expect(result.dataset1.level1.path).toBe("/data/dataset1/level1.MBTILES");
+        expect(result.dataset1.level1.path).toBe(
+            "/data/dataset1/level1.MBTILES"
+        );
         expect(result.dataset1.level1.open).toHaveBeenCalledTimes(1);
-        expect(result.dataset2.level2.path).toBe("/data/dataset2/level2.mbtiles");
+        expect(result.dataset2.level2.path).toBe(
+            "/data/dataset2/level2.mbtiles"
+        );
         expect(result.dataset2.level2.open).toHaveBeenCalledTimes(1);
 
         expect(consoleLogSpy).toHaveBeenCalledTimes(4);
