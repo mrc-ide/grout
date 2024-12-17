@@ -2,10 +2,12 @@ import { Router } from "express";
 import { IndexController } from "./controllers/indexController";
 import { TileController } from "./controllers/tileController";
 import notFound from "./errors/notFound";
+import {MetadataController} from "./controllers/metadataController";
 
 export const registerRoutes = () => {
     const router = Router();
     router.get("/", IndexController.getIndex);
+    router.get("/metadata", MetadataController.getMetadata);
     router.get("/tile/:dataset/:level/:z/:x/:y", TileController.getTile);
 
     // provide an endpoint we can use to test 500 response behaviour by throwing an "unexpected error" - but only if we
