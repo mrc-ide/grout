@@ -1,6 +1,6 @@
 import { describe, expect, test, beforeEach, vi } from "vitest";
 import { fs, vol } from "memfs";
-import { ConfigReader } from "../../src/server/configReader";
+import { ConfigReader } from "../../../src/server/configReader";
 
 // tell vitest to use fs mock from __mocks__ folder
 vi.mock("fs");

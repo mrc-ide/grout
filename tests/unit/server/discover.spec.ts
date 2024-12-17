@@ -1,6 +1,6 @@
 import { describe, expect, test, vi, beforeEach } from "vitest";
 import { fs, vol } from "memfs";
-import { discoverTileDatasets } from "../../src/server/discover";
+import { discoverTileDatasets } from "../../../src/server/discover";
 
 // tell vitest to use fs mock from __mocks__ folder
 vi.mock("fs");
@@ -17,7 +17,7 @@ const mockDatabaseConstructor = vi.hoisted(() => {
         .mockImplementation((path: string) => ({ path, open: vi.fn() }));
 });
 
-vi.mock("../../src/db/tileDatabase", () => ({
+vi.mock("../../../src/db/tileDatabase", () => ({
     TileDatabase: mockDatabaseConstructor
 }));
 
