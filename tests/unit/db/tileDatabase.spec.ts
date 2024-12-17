@@ -1,18 +1,16 @@
 import { describe, expect, test, vi, beforeEach } from "vitest";
 import { TileDatabase } from "../../../src/db/tileDatabase";
+import * as sqlite3 from "sqlite3";
 
-const { mockDatabaseConstructor, mockDatabase } = vi.hoisted(() => {
+const { mockDatabase, mockOpen } = vi.hoisted(() => {
     const mockDatabase = {
         get: vi.fn()
     };
-    const mockDatabaseConstructor = vi
-        .fn()
-        .mockImplementation(() => mockDatabase);
-    return { mockDatabaseConstructor, mockDatabase };
+    const mockOpen = vi.fn().mockImplementation(() => mockDatabase);
+    return { mockDatabase, mockOpen };
 });
-vi.mock("sqlite3", () => ({
-    Database: mockDatabaseConstructor,
-    OPEN_READONLY: 99
+vi.mock("sqlite", () => ({
+    open: mockOpen
 }));
 
 describe("TileDatabase", () => {
@@ -22,49 +20,37 @@ describe("TileDatabase", () => {
 
     const getDb = () => new TileDatabase("/testPath");
 
-    test("constructor opens db file", () => {
-        getDb();
-        expect(mockDatabaseConstructor).toHaveBeenCalledWith("/testPath", 99);
+    test("opens db file", async () => {
+        const sut = getDb();
+        await sut.open();
+        expect(mockOpen).toHaveBeenCalledWith({
+            filename: "/testPath",
+            driver: sqlite3.Database,
+            mode: sqlite3.OPEN_READONLY
+        });
     });
 
-    test("get tile data runs expected query in db", () => {
+    test("get tile data runs expected query in db, and returns tile_data", async () => {
+        const mockRow = { tile_data: { "mock" : "blob"} };
+        mockDatabase.get.mockImplementation(() => mockRow);
         const sut = getDb();
-        sut.getTileData(3, 2, 1);
-        expect(mockDatabase.get).toHaveBeenCalled();
-        expect(mockDatabase.get.mock.calls[0][0]).toBe(
-            "SELECT tile_data FROM tiles WHERE zoom_level = 3 AND tile_column = 2 AND tile_row = 1"
-        );
-    });
-
-    test("get tile data returns Promise which provides data", async () => {
-        const sut = getDb();
-        const promise = sut.getTileData(3, 2, 1);
-
-        // Expect callback to have been passed which returns tile_data
-        const callback = mockDatabase.get.mock.calls[0][1];
-        // mock sqlite3 using the callback to provide row data
-        callback(null, { tile_data: "mock tile data" });
-        const result = await promise;
-        expect(result).toBe("mock tile data");
+        await sut.open();
+        const result = await sut.getTileData(3, 2, 1);
+        expect(mockDatabase.get).toHaveBeenCalledWith(
+            "SELECT tile_data FROM tiles WHERE zoom_level = :z AND tile_column = :x AND tile_row = :y",
+            {
+                ":x": 2,
+                ":y": 1,
+                ":z": 3
+            });
+        expect(result).toBe(mockRow.tile_data);
     });
 
     test("get tile data returns null data when no row is found", async () => {
+        mockDatabase.get.mockImplementation(() => undefined);
         const sut = getDb();
-        const promise = sut.getTileData(3, 2, 1);
-
-        const callback = mockDatabase.get.mock.calls[0][1];
-        callback(null, undefined);
-        const result = await promise;
-        expect(result).toBeNull();
-    });
-
-    test("get tile data throws on database error", async () => {
-        const sut = getDb();
-        const promise = sut.getTileData(3, 2, 1);
-
-        const callback = mockDatabase.get.mock.calls[0][1];
-        const err = Error("test err");
-        callback(err, undefined);
-        await expect(() => promise).rejects.toThrowError("test err");
+        await sut.open();
+        const result = await sut.getTileData(3, 2, 1);
+        expect(result).toBe(null);
     });
 });
