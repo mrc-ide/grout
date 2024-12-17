@@ -3,7 +3,7 @@ import { registerRoutes } from "../../src/routes";
 import { IndexController } from "../../src/controllers/indexController";
 import { TileController } from "../../src/controllers/tileController";
 import notFound from "../../src/errors/notFound";
-import {MetadataController} from "../../src/controllers/metadataController";
+import { MetadataController } from "../../src/controllers/metadataController";
 
 const { mockRouterConstructor, mockRouter } = vi.hoisted(() => {
     const mockRouter = {

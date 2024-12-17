@@ -2,7 +2,7 @@ import { Router } from "express";
 import { IndexController } from "./controllers/indexController";
 import { TileController } from "./controllers/tileController";
 import notFound from "./errors/notFound";
-import {MetadataController} from "./controllers/metadataController";
+import { MetadataController } from "./controllers/metadataController";
 
 export const registerRoutes = () => {
     const router = Router();

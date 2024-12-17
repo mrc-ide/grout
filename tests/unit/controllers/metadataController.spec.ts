@@ -1,5 +1,5 @@
 import { describe, expect, test, vi } from "vitest";
-import {MetadataController} from "../../../src/controllers/metadataController";
+import { MetadataController } from "../../../src/controllers/metadataController";
 
 const mockJsonResponseSuccess = vi.hoisted(() => vi.fn());
 vi.mock("../../../src/jsonResponse", () => ({
@@ -9,7 +9,7 @@ vi.mock("../../../src/jsonResponse", () => ({
 describe("MetadataController", () => {
     test("returns metadata from app locals", () => {
         const mockMetadata = {
-            "datasets": {}
+            datasets: {}
         };
         const mockReq = {
             app: {
@@ -20,6 +20,9 @@ describe("MetadataController", () => {
         } as any;
         const mockRes = {} as any;
         MetadataController.getMetadata(mockReq, mockRes);
-        expect(mockJsonResponseSuccess).toHaveBeenCalledWith(mockMetadata, mockRes);
+        expect(mockJsonResponseSuccess).toHaveBeenCalledWith(
+            mockMetadata,
+            mockRes
+        );
     });
 });

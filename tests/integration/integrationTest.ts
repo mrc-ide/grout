@@ -1,5 +1,5 @@
 import request from "supertest";
-import {expect} from "vitest";
+import { expect } from "vitest";
 
 export const grout = request("http://localhost:5000");
 
@@ -10,4 +10,4 @@ export const getData = async (url: string) => {
     expect(response.body.status).toBe("success");
     expect(response.body.errors).toBe(null);
     return response.body.data;
-}
+};

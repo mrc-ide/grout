@@ -1,5 +1,5 @@
 import { describe, expect, test, vi, beforeEach } from "vitest";
-import {buildMetadata} from "../../../src/server/buildMetadata";
+import { buildMetadata } from "../../../src/server/buildMetadata";
 
 describe("buildMetadata", () => {
     test("builds expected metadata from datasets", () => {

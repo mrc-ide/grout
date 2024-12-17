@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { getData} from "./integrationTest";
+import { getData } from "./integrationTest";
 
 describe("index endpoint", () => {
     test("returns package version", async () => {
