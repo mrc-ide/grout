@@ -4,7 +4,9 @@ import { TileDatabase } from "./db/tileDatabase";
 import { TileDataset } from "./types/app";
 import { Dict } from "./types/utils";
 
-export const discoverTileDatasets = async (root: string): Promise<Dict<TileDataset>> => {
+export const discoverTileDatasets = async (
+    root: string
+): Promise<Dict<TileDataset>> => {
     // We expect to find tile databases in a single nesting of folders under root, where each folder has the dataset
     // name (e.g. gadm41), and each *.mbtiles file contains data for an administrative level within that dataset,
     // with an appropriate filename (e.g. admin0.mbtiles). These names are the dataset and level identifiers

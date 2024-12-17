@@ -14,11 +14,11 @@ const main = async () => {
     const app = express();
     initialiseLogging(app);
     app.use(cors());
-    app.use(compression({level: 9})); // Use best compression
+    app.use(compression({ level: 9 })); // Use best compression
 
     const rootDir = path.resolve(path.join(__dirname, ".."));
     const configReader = new ConfigReader(path.join(rootDir, "config"));
-    const {port} = configReader.readConfigFile(
+    const { port } = configReader.readConfigFile(
         "grout.config.json"
     ) as GroutConfig;
 
@@ -36,5 +36,5 @@ const main = async () => {
     app.listen(port, () => {
         console.log(`Grout is running on port ${port}`);
     });
-}
+};
 main();

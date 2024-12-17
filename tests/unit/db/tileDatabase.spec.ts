@@ -31,7 +31,7 @@ describe("TileDatabase", () => {
     });
 
     test("get tile data runs expected query in db, and returns tile_data", async () => {
-        const mockRow = { tile_data: { "mock" : "blob"} };
+        const mockRow = { tile_data: { mock: "blob" } };
         mockDatabase.get.mockImplementation(() => mockRow);
         const sut = getDb();
         await sut.open();
@@ -42,7 +42,8 @@ describe("TileDatabase", () => {
                 ":x": 2,
                 ":y": 1,
                 ":z": 3
-            });
+            }
+        );
         expect(result).toBe(mockRow.tile_data);
     });
 
