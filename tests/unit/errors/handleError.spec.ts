@@ -17,7 +17,7 @@ describe("handleError", () => {
     });
 
     test("handles GroutError", () => {
-        const err = new GroutError("test message", 400, ErrorType.BAD_REQUEST);
+        const err = new GroutError("test message", ErrorType.BAD_REQUEST);
         const mockReq = {} as any;
         const mockRes = {} as any;
 

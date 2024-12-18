@@ -61,11 +61,7 @@ describe("TileController", () => {
         await TileController.getTile(request, mockResponse, mockNext);
         // expect the async controller handler to have been used, so the error will be caught and passed to next
         expect(mockNext).toHaveBeenCalledWith(
-            new GroutError(
-                "Route not found: /mockUrl",
-                404,
-                ErrorType.NOT_FOUND
-            )
+            new GroutError("Route not found: /mockUrl", ErrorType.NOT_FOUND)
         );
     };
 
@@ -74,7 +70,6 @@ describe("TileController", () => {
         expect(mockNext).toHaveBeenCalledWith(
             new GroutError(
                 `"${badParam}" is not an integer`,
-                400,
                 ErrorType.BAD_REQUEST
             )
         );

@@ -3,3 +3,9 @@ export const enum ErrorType {
     NOT_FOUND = "NOT_FOUND",
     UNEXPECTED_ERROR = "UNEXPECTED_ERROR"
 }
+
+export const ErrorTypeStatuses: { [key in ErrorType]: number } = {
+    [ErrorType.BAD_REQUEST]: 400,
+    [ErrorType.NOT_FOUND]: 404,
+    [ErrorType.UNEXPECTED_ERROR]: 500
+};
