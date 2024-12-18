@@ -12,6 +12,11 @@ jobs:
   test-and-push:
     runs-on: ubuntu-latest
     steps:
+      - name: Set Pull Request Head SHA
+        if: ${{ github.event_name == 'pull_request' }}
+        run: |
+          long_sha=${{ github.event.pull_request.head.sha }}
+          echo "PR_HEAD_SHA=${long_sha:0:7}" >> $GITHUB_ENV
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:

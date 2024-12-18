@@ -1,11 +1,10 @@
 REGISTRY=ghcr.io
 PACKAGE_ORG=mrc-ide
 PACKAGE_NAME=grout
-if [[ "${GITHUB_EVENT_NAME}" = pull_request ]]; then
-  LONG_SHA=${GITHUB_SHA}
-  GIT_SHA=${LONG_SHA:0:7}
-else
+if [[ -z "${PR_HEAD_SHA}" ]]; then
   GIT_SHA=$(git -C "$PACKAGE_ROOT" rev-parse --short=7 HEAD)
+else
+  GIT_SHA=${PR_HEAD_SHA}
 fi
 if [[ -v "BRANCH_NAME" ]]; then
     GIT_BRANCH=${BRANCH_NAME}
