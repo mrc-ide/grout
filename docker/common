@@ -1,8 +1,8 @@
 REGISTRY=ghcr.io
 PACKAGE_ORG=mrc-ide
 PACKAGE_NAME=grout
-if [["${GITHUB_EVENT_NAME}" = "pull_request" ]]; then
-  LONG_SHA = ${GITHUB_SHA}
+if [[ "${GITHUB_EVENT_NAME}" = pull_request ]]; then
+  LONG_SHA=${GITHUB_SHA}
   GIT_SHA=${LONG_SHA:0:7}
 else
   GIT_SHA=$(git -C "$PACKAGE_ROOT" rev-parse --short=7 HEAD)
