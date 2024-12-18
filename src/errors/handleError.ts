@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { uid } from "uid";
 import { GroutError } from "./groutError";
 import { ErrorType } from "./errorType";
-import { reqWithError } from "../logging";
+import { RequestWithError } from "../logging";
 import { jsonResponseError } from "../jsonResponse";
 
 // We need to include the unused next var for this to be used correctly as an error handler
@@ -23,9 +23,10 @@ export const handleError = (
         : `An unexpected error occurred. Please contact support and quote error code ${uid()}`;
 
     // Set error type, detail and stack on req so morgan logs them
-    reqWithError(req).errorType = type;
-    reqWithError(req).errorDetail = detail;
-    reqWithError(req).errorStack = err.stack;
+    const reqWithError = req as RequestWithError;
+    reqWithError.errorType = type;
+    reqWithError.errorDetail = detail;
+    reqWithError.errorStack = err.stack;
 
     jsonResponseError(status, type, detail, res);
 };
