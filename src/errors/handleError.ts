@@ -8,7 +8,7 @@ import { jsonResponseError } from "../jsonResponse";
 // We need to include the unused next var for this to be used correctly as an error handler
 export const handleError = (
     err: Error,
-    req: Request,
+    req: RequestWithError,
     res: Response,
     _: NextFunction // eslint-disable-line @typescript-eslint/no-unused-vars
 ) => {
@@ -23,10 +23,9 @@ export const handleError = (
         : `An unexpected error occurred. Please contact support and quote error code ${uid()}`;
 
     // Set error type, detail and stack on req so morgan logs them
-    const reqWithError = req as RequestWithError;
-    reqWithError.errorType = type;
-    reqWithError.errorDetail = detail;
-    reqWithError.errorStack = err.stack;
+    req.errorType = type;
+    req.errorDetail = detail;
+    req.errorStack = err.stack;
 
     jsonResponseError(status, type, detail, res);
 };
