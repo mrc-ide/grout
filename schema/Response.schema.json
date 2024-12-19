@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "status": {
+      "enum": [
+        "success",
+        "failure"
+      ]
+    },
+    "data": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "errors": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "enum": [
+              "BAD_REQUEST",
+              "NOT_FOUND",
+              "UNEXPECTED_ERROR"
+            ],
+            "detail": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        },
+        "additionalProperties": false,
+        "required": [ "error", "detail" ]
+      }
+    }
+  },
+  "additionalProperties": false,
+  "required": [ "status", "errors", "data" ]
+}
