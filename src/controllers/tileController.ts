@@ -10,7 +10,6 @@ const parseIntParam = (param: string): number => {
     if (!/^\d+$/.test(param)) {
         throw new GroutError(
             `"${param}" is not an integer`,
-            400,
             ErrorType.BAD_REQUEST
         );
     }

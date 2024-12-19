@@ -12,6 +12,11 @@ jobs:
   test-and-push:
     runs-on: ubuntu-latest
     steps:
+      - name: Set Pull Request Head SHA
+        if: ${{ github.event_name == 'pull_request' }}
+        run: |
+          long_sha=${{ github.event.pull_request.head.sha }}
+          echo "PR_HEAD_SHA=${long_sha:0:7}" >> $GITHUB_ENV
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
@@ -30,8 +35,14 @@ jobs:
         run: ./docker/push
       - name: Run app in docker
         run: ./docker/run
-      - name: Run unit and integration tests
-        run: npm run test
+      - name: Run unit and integration tests with coverage
+        run: npm run coverage
+      - name: Upload coverage
+        uses: codecov/codecov-action@v4
+        with:
+          fail_ci_if_error: true # optional (default = false)
+          files: ./coverage/coverage-final.json
+          token: ${{ secrets.CODECOV_TOKEN }} # required
       - name: Push branch docker tag
         run: ./docker/push_branch_tag
 

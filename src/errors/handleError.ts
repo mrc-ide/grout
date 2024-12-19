@@ -1,14 +1,14 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Response } from "express";
 import { uid } from "uid";
 import { GroutError } from "./groutError";
 import { ErrorType } from "./errorType";
-import { reqWithError } from "../logging";
+import { RequestWithError } from "../logging";
 import { jsonResponseError } from "../jsonResponse";
 
 // We need to include the unused next var for this to be used correctly as an error handler
 export const handleError = (
     err: Error,
-    req: Request,
+    req: RequestWithError,
     res: Response,
     _: NextFunction // eslint-disable-line @typescript-eslint/no-unused-vars
 ) => {
@@ -23,9 +23,9 @@ export const handleError = (
         : `An unexpected error occurred. Please contact support and quote error code ${uid()}`;
 
     // Set error type, detail and stack on req so morgan logs them
-    reqWithError(req).errorType = type;
-    reqWithError(req).errorDetail = detail;
-    reqWithError(req).errorStack = err.stack;
+    req.errorType = type;
+    req.errorDetail = detail;
+    req.errorStack = err.stack;
 
     jsonResponseError(status, type, detail, res);
 };

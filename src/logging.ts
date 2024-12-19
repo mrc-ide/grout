@@ -2,25 +2,20 @@ import { Application, Request, Response } from "express";
 import morgan from "morgan";
 import { Dict } from "./types/utils";
 
-interface RequestWithError {
-    errorType: string;
-    errorDetail: string;
-    errorStack: string | undefined;
-}
-export const reqWithError = (req: Request) =>
-    req as unknown as RequestWithError;
+export type RequestWithError = Request & {
+    errorType?: string;
+    errorDetail?: string;
+    errorStack?: string;
+};
 
 export const initialiseLogging = (app: Application) => {
     // Log error details appended to request by handleError
-    morgan.token("error-type", (req: Request) => reqWithError(req).errorType);
-    morgan.token(
-        "error-detail",
-        (req: Request) => reqWithError(req).errorDetail
-    );
-    morgan.token("error-stack", (req: Request) => reqWithError(req).errorStack);
+    morgan.token("error-type", (req: RequestWithError) => req.errorType);
+    morgan.token("error-detail", (req: RequestWithError) => req.errorDetail);
+    morgan.token("error-stack", (req: RequestWithError) => req.errorStack);
 
     const customFormat = (
-        tokens: Dict<(req: Request, res: Response, header?: string) => string>,
+        tokens: Dict<(req: Request, res?: Response, header?: string) => string>,
         req: Request,
         res: Response
     ) => {
@@ -34,9 +29,9 @@ export const initialiseLogging = (app: Application) => {
             "-",
             tokens["response-time"](req, res),
             "ms",
-            tokens["error-type"](req, res),
-            tokens["error-detail"](req, res),
-            tokens["error-stack"](req, res)
+            tokens["error-type"](req),
+            tokens["error-detail"](req),
+            tokens["error-stack"](req)
         ].join(" ");
     };
 
