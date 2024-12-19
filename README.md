@@ -21,6 +21,8 @@ The server needs to be running for the integration tests to pass.
 
 Run unit and integration tests with `npm run test`
 
+Run tests with coverage using `npm run coverage`
+
 # Lint
 
 Run lint with `npm run lint`. To do any possible automatic fixes run `npm run lint-fix`.
