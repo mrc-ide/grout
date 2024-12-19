@@ -8,6 +8,7 @@
     "dev": "nodemon",
     "prod": "node dist/server.js",
     "test": "vitest",
+    "coverage": "vitest --coverage",
     "lint": "eslint",
     "lint-fix": "eslint --fix"
   },
@@ -31,6 +32,7 @@
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "@types/node": "^22.9.3",
+    "@vitest/coverage-istanbul": "^2.1.8",
     "eslint": "^9.15.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",

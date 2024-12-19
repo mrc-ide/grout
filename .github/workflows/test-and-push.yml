@@ -30,8 +30,14 @@ jobs:
         run: ./docker/push
       - name: Run app in docker
         run: ./docker/run
-      - name: Run unit and integration tests
-        run: npm run test
+      - name: Run unit and integration tests with coverage
+        run: npm run coverage
+      - name: Upload coverage
+        uses: codecov/codecov-action@v4
+        with:
+          fail_ci_if_error: true # optional (default = false)
+          files: ./coverage/coverage-final.json
+          token: ${{ secrets.CODECOV_TOKEN }} # required
       - name: Push branch docker tag
         run: ./docker/push_branch_tag
 
