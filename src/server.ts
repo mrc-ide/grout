@@ -7,6 +7,7 @@ import { GroutConfig } from "./types/app";
 import { registerRoutes } from "./routes";
 import { initialiseLogging } from "./logging";
 import { discoverTileDatasets } from "./discover";
+import { handleError } from "./errors/handleError";
 
 // Wrap the main server set-up functionality in a non-top-level method so we can use async - we can revert this in
 // https://mrc-ide.myjetbrains.com/youtrack/issue/mrc-6134/Add-Vite-build-and-related-tidy-up
@@ -32,7 +33,7 @@ const main = async () => {
     Object.freeze(app.locals); // We don't expect anything else to modify app.locals
 
     app.use("/", registerRoutes());
-
+    app.use(handleError);
     app.listen(port, () => {
         console.log(`Grout is running on port ${port}`);
     });

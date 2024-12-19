@@ -2,9 +2,20 @@ import { Application, Request, Response } from "express";
 import morgan from "morgan";
 import { Dict } from "./types/utils";
 
+export type RequestWithError = Request & {
+    errorType?: string;
+    errorDetail?: string;
+    errorStack?: string;
+};
+
 export const initialiseLogging = (app: Application) => {
+    // Log error details appended to request by handleError
+    morgan.token("error-type", (req: RequestWithError) => req.errorType);
+    morgan.token("error-detail", (req: RequestWithError) => req.errorDetail);
+    morgan.token("error-stack", (req: RequestWithError) => req.errorStack);
+
     const customFormat = (
-        tokens: Dict<(req: Request, res: Response, header?: string) => string>,
+        tokens: Dict<(req: Request, res?: Response, header?: string) => string>,
         req: Request,
         res: Response
     ) => {
@@ -17,7 +28,10 @@ export const initialiseLogging = (app: Application) => {
             tokens.res(req, res, "content-length"),
             "-",
             tokens["response-time"](req, res),
-            "ms"
+            "ms",
+            tokens["error-type"](req),
+            tokens["error-detail"](req),
+            tokens["error-stack"](req)
         ].join(" ");
     };
 
