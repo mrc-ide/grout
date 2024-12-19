@@ -1,0 +1,90 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+        <script src="https://unpkg.com/leaflet-vector-tile-layer@0.16.1/dist/VectorTileLayer.umd.js"></script>
+        <style>
+            #map {
+                width: 100vw;
+                height: 100vh;
+                position: absolute;
+                top: 0;
+                left: 0;
+            }
+            h1 {
+                position: relative;
+                margin-left: 48px;
+                margin-top: 0;
+                color: black;
+                background-color: transparent;
+                font-weight: bolder;
+                font-family: Courier, monospace;
+                font-size: 3rem;
+                z-index: 9999;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>GROUT</h1>
+        <div id="map"></div>
+        <script>
+            const map = L.map("map").setView({lon: 0, lat: 0}, 3);
+            map.options.minZoom = 3;
+
+            const nameProp = "NAME_1";
+            const groutUrl = "http://localhost:5000";
+
+            // Background layer
+            const attribution = "Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ; " +
+                "Boundaries: <a href='https://gadm.org' target='_blank'>GADM</a> version 4.1";
+            L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}", {
+                attribution }
+            ).addTo(map);
+
+            // shared options
+            const options = {
+                interactive: true,
+                maxNativeZoom: 10,
+                tms: true, // y values are inverted without this!
+            };
+
+            // Admin1 layer - assign shade of blue based on first letter of name!
+            const admin1Options = {
+                style: (feature, layerName) => {
+                    const shade = Math.min((feature.properties[nameProp].charCodeAt(0) - 65)/26, 1) * 255;
+                    return {
+                        fillColor: `rgb(${shade}, ${shade}, 255)`,
+                        fillOpacity: 0.5,
+                        color: "#cccccc",
+                        weight: 1
+                    }
+                },
+                ...options
+            };
+            VectorTileLayer(`${groutUrl}/tile/gadm41/admin1/{z}/{x}/{-y}`, admin1Options)
+                .on('mouseover', function(e) {
+                    // show a tooltip
+                    const name = e.layer.properties[nameProp];
+                    L.popup()
+                        .setContent(name)
+                        .setLatLng(e.latlng)
+                        .openOn(map);
+                })
+                .addTo(map);
+
+            // Admin0 layer
+            const admin0Options = {
+                style: {
+                    weight: 1,
+                    fill: false,
+                    color: "#000000"
+                },
+                ...options
+            };
+            VectorTileLayer(`${groutUrl}/tile/gadm41/admin0/{z}/{x}/{-y}`, admin0Options).addTo(map);
+
+        </script>
+    </body>
+</html>

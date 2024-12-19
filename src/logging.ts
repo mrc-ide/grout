@@ -1,6 +1,6 @@
 import { Application, Request, Response } from "express";
 import morgan from "morgan";
-import { Dict } from "./types";
+import { Dict } from "./types/utils";
 
 export const initialiseLogging = (app: Application) => {
     const customFormat = (
