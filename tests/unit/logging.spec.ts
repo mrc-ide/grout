@@ -1,10 +1,12 @@
 import { describe, expect, test, vi } from "vitest";
 import { initialiseLogging } from "../../src/logging";
 
-const { mockMorganResult, mockMorgan } = vi.hoisted(() => {
+const { mockMorganResult, mockMorgan, mockToken } = vi.hoisted(() => {
     const mockMorganResult = { morgan: "mock result" };
     const mockMorgan = vi.fn().mockImplementation(() => mockMorganResult);
-    return { mockMorganResult, mockMorgan };
+    const mockToken = vi.fn();
+    mockMorgan.token = mockToken;
+    return { mockMorganResult, mockMorgan, mockToken };
 });
 
 vi.mock("morgan", () => ({ default: mockMorgan }));
@@ -49,12 +51,15 @@ describe("initialiseLogging", () => {
             status: (req: any, res: any) => `${req.status}:${res.status}`,
             res: (req: any, res: any, name: string) =>
                 `${req.res}:${res.res}:${name}`,
-            "response-time": (req: any, res: any) => `${req.time}:${res.time}`
+            "response-time": (req: any, res: any) => `${req.time}:${res.time}`,
+            "error-type": (req: any, res: any) => req.errorType,
+            "error-detail": (req: any, res: any) => req.errorDetail,
+            "error-stack": (req: any, res: any) => req.errorStack
         };
 
         const expectedLog =
             "remoteReq:remoteRes remoteUReq:remoteURes methodReq:methodRes urlReq:urlRes " +
-            "statusReq:statusRes resReq:resRes:content-length - timeReq:timeRes ms";
+            "statusReq:statusRes resReq:resRes:content-length - timeReq:timeRes ms errTypeReq errDetailReq errStackReq";
         expect(customFormatParam(tokens, testReq, testRes)).toBe(expectedLog);
     });
 });
