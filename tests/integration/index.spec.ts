@@ -1,12 +1,9 @@
 import { describe, expect, test } from "vitest";
-import { grout } from "./integrationTest";
+import { getData } from "./integrationTest";
 
 describe("index endpoint", () => {
     test("returns package version", async () => {
-        const response = await grout.get("/");
-        expect(response.status).toBe(200);
-        const data = response.body;
-
+        const data = await getData("/");
         const expectedVersion = process.env.npm_package_version;
         expect(data.version).toBe(expectedVersion);
     });

@@ -2,10 +2,13 @@ import { beforeEach, describe, expect, test, vi } from "vitest";
 import { registerRoutes } from "../../src/routes";
 import { IndexController } from "../../src/controllers/indexController";
 import { TileController } from "../../src/controllers/tileController";
+import notFound from "../../src/errors/notFound";
+import { MetadataController } from "../../src/controllers/metadataController";
 
 const { mockRouterConstructor, mockRouter } = vi.hoisted(() => {
     const mockRouter = {
-        get: vi.fn()
+        get: vi.fn(),
+        use: vi.fn()
     };
     const mockRouterConstructor = vi.fn().mockImplementation(() => mockRouter);
     return { mockRouterConstructor, mockRouter };
@@ -27,8 +30,14 @@ describe("registerRoutes", () => {
         );
         expect(mockRouter.get).toHaveBeenNthCalledWith(
             2,
+            "/metadata",
+            MetadataController.getMetadata
+        );
+        expect(mockRouter.get).toHaveBeenNthCalledWith(
+            3,
             "/tile/:dataset/:level/:z/:x/:y",
             TileController.getTile
         );
+        expect(mockRouter.use).toHaveBeenCalledWith(notFound);
     });
 });
