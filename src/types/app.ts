@@ -8,6 +8,19 @@ export interface GroutConfig {
 // We represent this as a dict, where the keys are the level names
 export type TileDataset = Dict<TileDatabase>;
 
+export type GroutDatasetMetadata = {
+    levels: string[];
+};
+
+// We only support tile datasets at the moment
+export type datasetTypes = "tile";
+
+// Data type of metadata response - currently provides only the dataset names and levels for tile data, but will
+// eventually include other types of metadata
+export interface GroutMetadata {
+    datasets: Record<datasetTypes, Dict<GroutDatasetMetadata>>;
+}
+
 export interface AppLocals {
     tileDatasets: Dict<TileDataset>;
 }
