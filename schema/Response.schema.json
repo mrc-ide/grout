@@ -1,5 +1,11 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "content": {
+      "$dynamicAnchor": "TData",
+      "not": true
+    }
+  },
   "type": "object",
   "properties": {
     "status": {
@@ -9,10 +15,7 @@
       ]
     },
     "data": {
-      "type": [
-        "object",
-        "null"
-      ]
+      "$dynamicRef": "#TData"
     },
     "errors": {
       "type": [
