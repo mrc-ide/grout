@@ -18,7 +18,7 @@ export type DatasetTypes = "tile";
 // Data type of metadata response - currently provides only the dataset names and levels for tile data, but will
 // eventually include other types of metadata
 export interface GroutMetadata {
-    datasets: Record<datasetTypes, Dict<GroutDatasetMetadata>>;
+    datasets: Record<DatasetTypes, Dict<GroutDatasetMetadata>>;
 }
 
 export interface AppLocals {
