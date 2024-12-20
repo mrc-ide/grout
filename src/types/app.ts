@@ -13,7 +13,7 @@ export type GroutDatasetMetadata = {
 };
 
 // We only support tile datasets at the moment
-export type datasetTypes = "tile";
+export type DatasetTypes = "tile";
 
 // Data type of metadata response - currently provides only the dataset names and levels for tile data, but will
 // eventually include other types of metadata
