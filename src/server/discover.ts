@@ -1,8 +1,8 @@
 import * as fs from "fs";
 import * as path from "node:path";
-import { TileDatabase } from "./db/tileDatabase";
-import { TileDataset } from "./types/app";
-import { Dict } from "./types/utils";
+import { TileDatabase } from "../db/tileDatabase";
+import { TileDataset } from "../types/app";
+import { Dict } from "../types/utils";
 
 export const discoverTileDatasets = async (
     root: string
