@@ -14,5 +14,5 @@
       "required": ["version"]
     }
   },
-  "$ref": "Response.schema.json"
+  "$ref": "grout-response"
 }

@@ -1,0 +1,27 @@
+{
+  "$comment": "TODO: complete this! Make dictionary of tile datasets",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "data": {
+      "$dynamicAnchor": "TData",
+      "type": "object",
+      "properties": {
+        "datasets": {
+          "type": "object",
+          "properties": {
+            "tile": {
+              "type": "object"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["tile"]
+        },
+        "additionalProperties": false,
+        "required": ["datasets"]
+      },
+      "additionalProperties": false,
+      "required": ["version"]
+    }
+  },
+  "$ref": "Response.schema.json#grout-response"
+}
