@@ -1,5 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "grout-response",
   "type": "object",
   "properties": {
     "status": {
@@ -35,9 +36,10 @@
       }
     },
     "data": {
+      "description": "Grout integration tests append the grout-data $id to the expected data schema at runtime so this $ref can be found",
       "oneOf": [
         { "type": "null" },
-        { "type": "object" }
+        { "$ref": "grout-data" }
       ]
     }
   },

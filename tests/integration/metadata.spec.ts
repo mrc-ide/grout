@@ -3,7 +3,7 @@ import { getData } from "./integrationTest";
 
 describe("metadata endpoint", () => {
     test("returns expected dataset metadata", async () => {
-        const data = await getData("/metadata", "MetadataResponse");
+        const data = await getData("/metadata", "Metadata");
         expect(data).toStrictEqual({
             datasets: {
                 tile: {
