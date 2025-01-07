@@ -1,9 +1,10 @@
 import { describe, expect, test, beforeAll, afterAll } from "vitest";
-import { grout } from "./integrationTest";
+import {grout, validateResponse} from "./integrationTest";
 import * as fs from "fs";
 
 const expect404Response = async (url: string) => {
     const response = await grout.get(url);
+    await validateResponse(response);
     expect(response.status).toBe(404);
     expect(response.body).toStrictEqual({
         status: "failure",
@@ -14,6 +15,7 @@ const expect404Response = async (url: string) => {
 
 const expect400Response = async (url: string, error: string) => {
     const response = await grout.get(url);
+    await validateResponse(response);
     expect(response.status).toBe(400);
     expect(response.body).toStrictEqual({
         status: "failure",
@@ -68,6 +70,7 @@ describe("500 error response", () => {
         // NB The error-test endpoint is only enabled when the GROUT_ERROR_TEST env var is set when the server starts
         // up, e.g. when running through ./docker/run
         const response = await grout.get("/error-test");
+        await validateResponse(response);
         expect(response.status).toBe(500);
         expect(response.body.status).toBe("failure");
         expect(response.body.data).toBe(null);

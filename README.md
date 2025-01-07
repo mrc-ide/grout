@@ -43,10 +43,10 @@ schema file, for the `data` part of the response.
 
 The Response schema includes a `$ref` for the `data` property, with value `grout-data`. In order for this `$ref` to be 
 satisfied during validation, the expected data schema needs to be given `$id: "grout-data"`. This happens in the integration 
-test helper method `getData`, which takes a data schema name parameter. It loads both the Response and expected data schema, 
-and appends `$id: "grout-data` to the data schema before performing validation and returning the data. 
-This works so long as there is only one loaded schema with that `$id`. 
+test helper method `validateResponse` (called from `getData`), which takes a data schema name parameter. It loads both the Response 
+and expected data schema, and appends `$id: "grout-data` to the data schema before performing validation. This works so 
+long as there is only one loaded schema with that `$id`. 
 
-A better solution for dynamic nested schema would be to use `$dynamicRef`. However, a longstanding bug with `$dynamicRef`
-in Ajv prevents this.  
+A better solution for dynamic nested schema would be to use `$dynamicRef`. However, a [longstanding bug](https://github.com/ajv-validator/ajv/issues/1573) 
+with `$dynamicRef` in Ajv prevents this.  
 
