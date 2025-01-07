@@ -1,5 +1,5 @@
 import { describe, expect, test, beforeAll, afterAll } from "vitest";
-import {grout, validateResponse} from "./integrationTest";
+import { grout, validateResponse } from "./integrationTest";
 import * as fs from "fs";
 
 const expect404Response = async (url: string) => {
