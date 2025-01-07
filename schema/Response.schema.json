@@ -36,7 +36,7 @@
       }
     },
     "data": {
-      "description": "Grout integration tests append the grout-data $id to the expected data schema at runtime so this $ref can be found",
+      "description": "Grout integration tests append the 'grout-data' $id to the expected data schema at runtime so this $ref can be found",
       "oneOf": [
         { "type": "null" },
         { "$ref": "grout-data" }
