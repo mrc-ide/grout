@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "grout-response",
+  "$id": "https://example.com/grout-response",
   "$defs": {
     "content": {
       "$dynamicAnchor": "TData",
@@ -15,9 +15,6 @@
         "failure"
       ]
     },
-    "data": {
-      "$dynamicRef": "#TData"
-    },
     "errors": {
       "type": [
         "array",
@@ -31,18 +28,21 @@
               "BAD_REQUEST",
               "NOT_FOUND",
               "UNEXPECTED_ERROR"
-            ],
-            "detail": {
-              "type": [
-                "string",
-                "null"
-              ]
-            }
+            ]
+          },
+          "detail": {
+            "type": [
+              "string",
+              "null"
+            ]
           }
         },
         "additionalProperties": false,
         "required": [ "error", "detail" ]
       }
+    },
+    "data": {
+      "$dynamicRef": "#TData"
     }
   },
   "additionalProperties": false,

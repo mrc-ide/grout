@@ -1,5 +1,4 @@
 {
-  "$comment": "TODO: complete this! Make dictionary of tile datasets",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$defs": {
     "data": {
@@ -10,18 +9,26 @@
           "type": "object",
           "properties": {
             "tile": {
-              "type": "object"
+              "type": "object",
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "levelsx": {
+                    "type": "array",
+                    "items": { "type": "string" }
+                  }
+                },
+                "required": ["levelsx"]
+              }
             }
           },
           "additionalProperties": false,
           "required": ["tile"]
-        },
-        "additionalProperties": false,
-        "required": ["datasets"]
+        }
       },
       "additionalProperties": false,
-      "required": ["version"]
+      "required": ["datasets"]
     }
   },
-  "$ref": "Response.schema.json#grout-response"
+  "$ref": "grout-response"
 }
