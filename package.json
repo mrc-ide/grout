@@ -30,7 +30,6 @@
     "uid": "^2.0.2"
   },
   "devDependencies": {
-    "@hyperjump/json-schema": "^1.10.0",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "@types/node": "^22.9.3",

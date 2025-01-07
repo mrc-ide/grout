@@ -1,6 +1,5 @@
 import request from "supertest";
 import Ajv from "ajv/dist/2020"
-import { registerSchema, validate } from "@hyperjump/json-schema/draft-2020-12";
 import { expect } from "vitest";
 
 export const grout = request("http://localhost:5000");
@@ -16,26 +15,22 @@ export const getData = async (url: string, schemaName: string) => {
 
     const ajv = new Ajv();
 
-    const schema = await getSchema(schemaName);
-    ajv.addSchema(schema);
+    const responseSchema = await getSchema("Response"); // outer Response schema
+    //ajv.addSchema(responseSchema);
 
-    const responseSchema = await getSchema("Response"); // We always need the outer Response schema
-    ajv.addSchema(responseSchema);
+    const dataSchema = await getSchema(schemaName);
+    //ajv.addSchema(dataSchema);
 
-    registerSchema(responseSchema, "https://example.com/grout-response");
-    registerSchema(schema, "https://example.com/grout-index");
+    // First validate that the entire response conforms to the Response schema...
+    const responseValidate = ajv.compile(responseSchema);
+    expect(responseValidate(response.body), `Response schema errors: \n ${ajv.errorsText(responseValidate.errors)} \nfor response: \n${JSON.stringify(response.body, null, 2)}`).toBe(true);
 
-    const output = await validate("https://example.com/grout-index", response.body);
-
-
-    const valid = ajv.validate(schema, response.body);
-    //const validate = ajv.compile(schema);
-    //const valid = validate(response.body);
-    expect(valid, `Schema errors: \n ${JSON.stringify(ajv.errors)} \nfor response: \n${JSON.stringify(response.body, null, 2)}`).toBe(true);
-
-    expect(output.valid, `Schema errors: ${JSON.stringify(output)}`).toBe(true);
+    // ...then that the data part matches the expected data schema
+    const dataValidate = ajv.compile(dataSchema);
+    const data = response.body.data;
+    expect(dataValidate(data), `Data schema errors: \n${ajv.errorsText(dataValidate.errors)} \nfor data: \n${JSON.stringify(data, null, 2)}`).toBe(true)
 
     expect(response.body.status).toBe("success");
     expect(response.body.errors).toBe(null);
-    return response.body.data;
+    return data;
 };

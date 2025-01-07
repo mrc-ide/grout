@@ -1,19 +1,12 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://example.com/grout-index",
-  "$defs": {
-    "index-data": {
-      "$dynamicAnchor": "TData",
-      "type": "object",
-      "properties": {
-        "versionx": {
-          "type": "string",
-          "pattern": "^[0-9]+.[0-9]+.[0-9]+$"
-        }
-      },
-      "additionalProperties": false,
-      "required": ["versionx"]
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+.[0-9]+.[0-9]+$"
     }
   },
-  "$ref": "https://example.com/grout-response"
+  "additionalProperties": false,
+  "required": ["version"]
 }

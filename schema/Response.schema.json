@@ -1,12 +1,5 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://example.com/grout-response",
-  "$defs": {
-    "content": {
-      "$dynamicAnchor": "TData",
-      "not": true
-    }
-  },
   "type": "object",
   "properties": {
     "status": {
@@ -42,7 +35,10 @@
       }
     },
     "data": {
-      "$dynamicRef": "#TData"
+      "oneOf": [
+        { "type": "null" },
+        { "type": "object" }
+      ]
     }
   },
   "additionalProperties": false,

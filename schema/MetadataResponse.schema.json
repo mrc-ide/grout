@@ -1,34 +1,28 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$defs": {
-    "data": {
-      "$dynamicAnchor": "TData",
+  "type": "object",
+  "properties": {
+    "datasets": {
       "type": "object",
       "properties": {
-        "datasets": {
+        "tile": {
           "type": "object",
-          "properties": {
-            "tile": {
-              "type": "object",
-              "additionalProperties": {
-                "type": "object",
-                "properties": {
-                  "levelsx": {
-                    "type": "array",
-                    "items": { "type": "string" }
-                  }
-                },
-                "required": ["levelsx"]
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "levels": {
+                "type": "array",
+                "items": { "type": "string" }
               }
-            }
-          },
-          "additionalProperties": false,
-          "required": ["tile"]
+            },
+            "required": ["levels"]
+          }
         }
       },
       "additionalProperties": false,
-      "required": ["datasets"]
+      "required": ["tile"]
     }
   },
-  "$ref": "grout-response"
+  "additionalProperties": false,
+  "required": ["datasets"]
 }
