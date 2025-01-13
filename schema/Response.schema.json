@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "grout-response",
+  "type": "object",
+  "properties": {
+    "status": {
+      "enum": [
+        "success",
+        "failure"
+      ]
+    },
+    "errors": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "enum": [
+              "BAD_REQUEST",
+              "NOT_FOUND",
+              "UNEXPECTED_ERROR"
+            ]
+          },
+          "detail": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": [ "error", "detail" ]
+      }
+    },
+    "data": {
+      "description": "Grout integration tests append the 'grout-data' $id to the expected data schema at runtime so this $ref can be found",
+      "anyOf": [
+        { "type": "null" },
+        { "$ref": "grout-data" }
+      ]
+    }
+  },
+  "additionalProperties": false,
+  "required": [ "status", "errors", "data" ]
+}

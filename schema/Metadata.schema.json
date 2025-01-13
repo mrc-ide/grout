@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "datasets": {
+      "type": "object",
+      "properties": {
+        "tile": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "levels": {
+                "type": "array",
+                "items": { "type": "string" }
+              }
+            },
+            "required": ["levels"]
+          }
+        }
+      },
+      "additionalProperties": false,
+      "required": ["tile"]
+    }
+  },
+  "additionalProperties": false,
+  "required": ["datasets"]
+}
