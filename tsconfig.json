@@ -1,4 +1,5 @@
 {
+  "moduleResolution": "bundler",
   "compilerOptions": {
     "target": "esnext",
     "module": "nodenext",
@@ -8,5 +9,5 @@
     "rootDir": "./src"
   },
   "exclude": ["node_modules"],
-  "include": ["./src/**/*.ts"]
+  "include": ["./src/**/*.ts", "vite.config.mts"]
 }

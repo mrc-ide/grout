@@ -10,10 +10,15 @@ import { discoverTileDatasets } from "./server/discover";
 import { handleError } from "./errors/handleError";
 import { buildMetadata } from "./server/buildMetadata";
 
+//// TODO: we might be able to take this out once we configure modules
+import url from 'url'
+const __filename = url.fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 // Wrap the main server set-up functionality in a non-top-level method so we can use async - we can revert this in
 // https://mrc-ide.myjetbrains.com/youtrack/issue/mrc-6134/Add-Vite-build-and-related-tidy-up
-const main = async () => {
-    const app = express();
+const app = express();
+//const main = async () => {
     initialiseLogging(app);
     app.use(cors());
     app.use(compression({ level: 9 })); // Use best compression
@@ -41,5 +46,5 @@ const main = async () => {
     app.listen(port, () => {
         console.log(`Grout is running on port ${port}`);
     });
-};
-main();
+
+export const viteNodeApp = app;
