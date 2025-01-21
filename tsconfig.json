@@ -9,5 +9,5 @@
     "rootDir": "./src"
   },
   "exclude": ["node_modules"],
-  "include": ["./src/**/*.ts", "vite.config.mts"]
+  "include": ["./src/**/*.ts"]
 }
