@@ -45,7 +45,7 @@ app.use(handleError);
 if (import.meta.env.PROD) {
     app.listen(port, () => {
         console.log(`Grout is running on port ${port}`);
-    })
+    });
 } else {
     console.log("Grout is running through port managed by Vite");
 }
