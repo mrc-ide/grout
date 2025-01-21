@@ -15,5 +15,8 @@ export default defineConfig({
             initAppOnBoot: true,
             outputFormat: "esm"
         })
-    ]
+    ],
+    server: {
+        port: 5000
+    }
 });

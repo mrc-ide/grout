@@ -7,13 +7,14 @@ Grout is implemented as an [express](https://expressjs.com/) server in Typescrip
 
 Developed with node v22.
 
-Run in dev mode with hot reloading: `npm run dev`
+Run in dev mode with hot reloading managed by vite: `npm run dev`
 
 Build for production: `npm run build`
 
 Run in production mode: `npm run prod`
 
-In both modes, local run is on port 5000. Port is configured in `config/grout.config.json`
+In both modes, local run is on port 5000. Port is configured in `config/grout.config.json` (for running in production)
+and `vite.config.mts` (for running in dev mode).
 
 ## Tests
 

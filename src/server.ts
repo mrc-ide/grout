@@ -41,8 +41,13 @@ Object.freeze(app.locals); // We don't expect anything else to modify app.locals
 
 app.use("/", registerRoutes());
 app.use(handleError);
-app.listen(port, () => {
-    console.log(`Grout is running on port ${port}`);
-});
+
+if (import.meta.env.PROD) {
+    app.listen(port, () => {
+        console.log(`Grout is running on port ${port}`);
+    })
+} else {
+    console.log("Grout is running through port managed by Vite");
+}
 
 export const viteNodeApp = app;
