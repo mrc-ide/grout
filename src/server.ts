@@ -1,6 +1,7 @@
 import compression from "compression";
 import cors from "cors";
 import express from "express";
+import url from "url";
 import * as path from "node:path";
 import { ConfigReader } from "./server/configReader";
 import { GroutConfig } from "./types/app";
@@ -10,36 +11,43 @@ import { discoverTileDatasets } from "./server/discover";
 import { handleError } from "./errors/handleError";
 import { buildMetadata } from "./server/buildMetadata";
 
-// Wrap the main server set-up functionality in a non-top-level method so we can use async - we can revert this in
-// https://mrc-ide.myjetbrains.com/youtrack/issue/mrc-6134/Add-Vite-build-and-related-tidy-up
-const main = async () => {
-    const app = express();
-    initialiseLogging(app);
-    app.use(cors());
-    app.use(compression({ level: 9 })); // Use best compression
+// Set __dirname for ESM
+const __filename = url.fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-    const rootDir = path.resolve(path.join(__dirname, ".."));
-    const configReader = new ConfigReader(path.join(rootDir, "config"));
-    const { port } = configReader.readConfigFile(
-        "grout.config.json"
-    ) as GroutConfig;
+const app = express();
 
-    const tileDatasets = await discoverTileDatasets(
-        path.resolve(path.join(rootDir, "data"))
-    );
+initialiseLogging(app);
+app.use(cors());
+app.use(compression({ level: 9 })); // Use best compression
 
-    const metadata = buildMetadata(tileDatasets);
+const rootDir = path.resolve(path.join(__dirname, ".."));
+const configReader = new ConfigReader(path.join(rootDir, "config"));
+const { port } = configReader.readConfigFile(
+    "grout.config.json"
+) as GroutConfig;
 
-    Object.assign(app.locals, {
-        tileDatasets,
-        metadata
-    });
-    Object.freeze(app.locals); // We don't expect anything else to modify app.locals
+const tileDatasets = await discoverTileDatasets(
+    path.resolve(path.join(rootDir, "data"))
+);
 
-    app.use("/", registerRoutes());
-    app.use(handleError);
+const metadata = buildMetadata(tileDatasets);
+
+Object.assign(app.locals, {
+    tileDatasets,
+    metadata
+});
+Object.freeze(app.locals); // We don't expect anything else to modify app.locals
+
+app.use("/", registerRoutes());
+app.use(handleError);
+
+if (import.meta.env.PROD) {
     app.listen(port, () => {
         console.log(`Grout is running on port ${port}`);
     });
-};
-main();
+} else {
+    console.log("Grout is running through port managed by Vite");
+}
+
+export const viteNodeApp = app;
