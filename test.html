@@ -5,6 +5,7 @@
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
         <script src="https://unpkg.com/leaflet-vector-tile-layer@0.16.1/dist/VectorTileLayer.umd.js"></script>
+        <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
         <style>
             #map {
                 width: 100vw;
@@ -24,17 +25,57 @@
                 font-size: 3rem;
                 z-index: 9999;
             }
+            #app {
+                font-family: sans-serif;
+                font-size: 18px;
+                background-color: rgba(255, 255, 255, 0.7);
+                padding: 8px;
+                position: absolute;
+                right: 12px;
+                top: 12px;
+                z-index: 9999;
+            }
+            #dataset-select {
+                font-size: 18px;
+                width: 100%;
+            }
+            #admin-radios {
+                margin-top: 6px;
+                padding: 6px;
+            }
+            input {
+                margin-right: 16px;
+            }
+            label {
+                vertical-align: middle;
+            }
         </style>
     </head>
     <body>
         <h1>GROUT Test Page</h1>
-        <div id="map"></div>
+        <div id="map">
+        </div>
+        <div id="app">
+            <label for="dataset-select">Dataset</label>
+            <select id="dataset-select" v-if="datasets" v-model="selectedDatasetName">
+                <option v-for="dataset in Object.keys(datasets)" :value="dataset">{{dataset}}</option>
+            </select>
+            <div id="admin-radios">
+                <label for="admin1">Admin 1</label>
+                <input type="radio" id="admin1" v-model="adminLevel" :value="1" />
+                <label for="admin2">Admin 2</label>
+                <input type="radio" id="admin2" v-model="adminLevel" :value="2" />
+            </div>
+        </div>
         <script>
             const map = L.map("map").setView({lon: 0, lat: 0}, 3);
             map.options.minZoom = 3;
 
             const nameProp = "NAME_1";
-            const groutUrl = "http://localhost:5000";
+            const groutServers = {
+                "local": "http://localhost:5000",
+                "mrcdata": "https://mrcdata.dide.ic.ac.uk/grout"
+            };
 
             // Background layer
             const attribution = "Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ; " +
@@ -50,8 +91,8 @@
                 tms: true, // y values are inverted without this!
             };
 
-            // Admin1 layer - assign shade of blue based on first letter of name!
-            const admin1Options = {
+            // Region layer options - assign shade of blue based on first letter of name!
+            const regionOptions = {
                 style: (feature, layerName) => {
                     const shade = Math.min((feature.properties[nameProp].charCodeAt(0) - 65)/26, 1) * 255;
                     return {
@@ -63,19 +104,9 @@
                 },
                 ...options
             };
-            VectorTileLayer(`${groutUrl}/tile/gadm41/admin1/{z}/{x}/{-y}`, admin1Options)
-                .on('mouseover', function(e) {
-                    // show a tooltip
-                    const name = e.layer.properties[nameProp];
-                    L.popup()
-                        .setContent(name)
-                        .setLatLng(e.latlng)
-                        .openOn(map);
-                })
-                .addTo(map);
 
-            // Admin0 layer
-            const admin0Options = {
+            // Country layer options
+            const countryOptions = {
                 style: {
                     weight: 1,
                     fill: false,
@@ -83,8 +114,80 @@
                 },
                 ...options
             };
-            VectorTileLayer(`${groutUrl}/tile/gadm41/admin0/{z}/{x}/{-y}`, admin0Options).addTo(map);
 
+            let regionLayer = null;
+            let countryLayer = null;
+
+            const { createApp, ref, onMounted, watch } = Vue;
+            createApp({
+                setup() {
+                    // Dict of friendly name to { url, dataset }
+                    const datasets = ref(null);
+                    const selectedDatasetName = ref("");
+                    const adminLevel = ref(1);
+
+                    onMounted(async () => {
+                        // Populate drop down with available datasets from both servers
+                        const fetchedDatasets = {};
+                        for (let server in groutServers) {
+                            const url = groutServers[server];
+                            try {
+                                const response = await fetch(`${url}/metadata`);
+                                const metadata = await response.json();
+                                if (metadata.status === "success") {
+                                    const datasetNames = Object.keys(metadata.data.datasets.tile);
+                                    datasetNames.forEach((dataset) => {
+                                        fetchedDatasets[`${server}: ${dataset}`] = {url, dataset};
+                                    });
+                                }
+                            }
+                            catch(e) {
+                                console.log(`Error fetching from ${url}: ${e}`);
+                            }
+                        }
+                        datasets.value = fetchedDatasets;
+                        if (Object.keys(fetchedDatasets).length) {
+                            selectedDatasetName.value = Object.keys(fetchedDatasets)[0];
+                        }
+                    });
+
+                    watch([selectedDatasetName, adminLevel], () => {
+                        updateMap();
+                    });
+
+                    const updateMap = () => {
+                        if (regionLayer) {
+                            regionLayer.removeFrom(map);
+                        }
+                        if (countryLayer) {
+                            countryLayer.removeFrom(map);
+                        }
+
+                        const { url, dataset } = datasets.value[selectedDatasetName.value];
+                        const level = adminLevel.value;
+
+                        regionLayer = VectorTileLayer(`${url}/tile/${dataset}/admin${level}/{z}/{x}/{-y}`, regionOptions)
+                            .on('mouseover', function (e) {
+                                // show a tooltip
+                                const name = e.layer.properties[nameProp];
+                                L.popup()
+                                    .setContent(name)
+                                    .setLatLng(e.latlng)
+                                    .openOn(map);
+                            });
+                        regionLayer.addTo(map);
+
+                        countryLayer = VectorTileLayer(`${url}/tile/${dataset}/admin0/{z}/{x}/{-y}`, countryOptions);
+                        countryLayer.addTo(map);
+                    }
+
+                    return {
+                        datasets,
+                        selectedDatasetName,
+                        adminLevel
+                    }
+                }
+            }).mount('#app')
         </script>
     </body>
 </html>

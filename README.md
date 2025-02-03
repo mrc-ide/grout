@@ -24,6 +24,9 @@ Run unit and integration tests with `npm run test`
 
 Run tests with coverage using `npm run coverage`
 
+Manual testing can be done by viewing [test.html](test.html) in the browser. Here you can choose to view any available dataset on
+either a local grout server, or deployed to mrcdata. 
+
 # Lint
 
 Run lint with `npm run lint`. To do any possible automatic fixes run `npm run lint-fix`.
