@@ -68,8 +68,12 @@
             </div>
         </div>
         <script>
-            const map = L.map("map").setView({lon: 0, lat: 0}, 3);
+            const map = L.map("map", {
+                maxBoundsViscosity: 1.0 // prevent any dragging outside max bounds
+            }).setView({ lon: 0, lat: 0 }, 3);
             map.options.minZoom = 3;
+            map.setMaxBounds(map.getBounds());
+
 
             //const nameProp = "NAME_1";
             const groutServers = {
