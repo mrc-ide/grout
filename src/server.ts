@@ -39,7 +39,7 @@ Object.assign(app.locals, {
 });
 Object.freeze(app.locals); // We don't expect anything else to modify app.locals
 
-app.use("/", registerRoutes());
+app.use("/", registerRoutes(__dirname));
 app.use(handleError);
 
 if (import.meta.env.PROD) {
