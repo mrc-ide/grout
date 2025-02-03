@@ -35,11 +35,12 @@ const metadata = buildMetadata(tileDatasets);
 
 Object.assign(app.locals, {
     tileDatasets,
-    metadata
+    metadata,
+    rootDir
 });
 Object.freeze(app.locals); // We don't expect anything else to modify app.locals
 
-app.use("/", registerRoutes(__dirname));
+app.use("/", registerRoutes());
 app.use(handleError);
 
 if (import.meta.env.PROD) {

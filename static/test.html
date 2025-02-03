@@ -60,7 +60,7 @@
             <select id="dataset-select" v-if="datasets" v-model="selectedDatasetName">
                 <option v-for="dataset in Object.keys(datasets)" :value="dataset">{{dataset}}</option>
             </select>
-            <div id="admin-radios">
+            <div id="admin-radios" v-if="datasets && datasets[selectedDatasetName].admin2Enabled">
                 <label for="admin1">Admin 1</label>
                 <input type="radio" id="admin1" v-model="adminLevel" :value="1" />
                 <label for="admin2">Admin 2</label>
@@ -71,7 +71,7 @@
             const map = L.map("map").setView({lon: 0, lat: 0}, 3);
             map.options.minZoom = 3;
 
-            const nameProp = "NAME_1";
+            //const nameProp = "NAME_1";
             const groutServers = {
                 "local": "http://localhost:5000",
                 "mrcdata": "https://mrcdata.dide.ic.ac.uk/grout"
@@ -91,20 +91,6 @@
                 tms: true, // y values are inverted without this!
             };
 
-            // Region layer options - assign shade of blue based on first letter of name!
-            const regionOptions = {
-                style: (feature, layerName) => {
-                    const shade = Math.min((feature.properties[nameProp].charCodeAt(0) - 65)/26, 1) * 255;
-                    return {
-                        fillColor: `rgb(${shade}, ${shade}, 255)`,
-                        fillOpacity: 0.5,
-                        color: "#cccccc",
-                        weight: 1
-                    }
-                },
-                ...options
-            };
-
             // Country layer options
             const countryOptions = {
                 style: {
@@ -118,13 +104,28 @@
             let regionLayer = null;
             let countryLayer = null;
 
-            const { createApp, ref, onMounted, watch } = Vue;
+            const { createApp, ref, onMounted, watch, computed } = Vue;
             createApp({
                 setup() {
-                    // Dict of friendly name to { url, dataset }
+                    // Dict of friendly name to { url, dataset, admin2Enabled }
                     const datasets = ref(null);
                     const selectedDatasetName = ref("");
                     const adminLevel = ref(1);
+                    const nameProp = computed(() => `NAME_${adminLevel.value}`);
+
+                    // Region layer options - assign shade of blue based on first letter of name!
+                    const regionOptions = computed(() => ({
+                        style: (feature, layerName) => {
+                            const shade = Math.min((feature.properties[nameProp.value].charCodeAt(0) - 65)/26, 1) * 255;
+                            return {
+                                fillColor: `rgb(${shade}, ${shade}, 255)`,
+                                fillOpacity: 0.5,
+                                color: "#cccccc",
+                                weight: 1
+                            }
+                        },
+                        ...options
+                    }));
 
                     onMounted(async () => {
                         // Populate drop down with available datasets from both servers
@@ -137,7 +138,8 @@
                                 if (metadata.status === "success") {
                                     const datasetNames = Object.keys(metadata.data.datasets.tile);
                                     datasetNames.forEach((dataset) => {
-                                        fetchedDatasets[`${server}: ${dataset}`] = {url, dataset};
+                                        const admin2Enabled = metadata.data.datasets.tile[dataset].levels.includes("admin2");
+                                        fetchedDatasets[`${server}: ${dataset}`] = {url, dataset, admin2Enabled};
                                     });
                                 }
                             }
@@ -152,6 +154,9 @@
                     });
 
                     watch([selectedDatasetName, adminLevel], () => {
+                        if (!datasets.value[selectedDatasetName.value].admin2Enabled) {
+                            adminLevel.value = 1;
+                        }
                         updateMap();
                     });
 
@@ -166,10 +171,10 @@
                         const { url, dataset } = datasets.value[selectedDatasetName.value];
                         const level = adminLevel.value;
 
-                        regionLayer = VectorTileLayer(`${url}/tile/${dataset}/admin${level}/{z}/{x}/{-y}`, regionOptions)
+                        regionLayer = VectorTileLayer(`${url}/tile/${dataset}/admin${level}/{z}/{x}/{-y}`, regionOptions.value)
                             .on('mouseover', function (e) {
                                 // show a tooltip
-                                const name = e.layer.properties[nameProp];
+                                const name = e.layer.properties[nameProp.value];
                                 L.popup()
                                     .setContent(name)
                                     .setLatLng(e.latlng)

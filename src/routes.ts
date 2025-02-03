@@ -3,15 +3,14 @@ import { IndexController } from "./controllers/indexController";
 import { TileController } from "./controllers/tileController";
 import notFound from "./errors/notFound";
 import { MetadataController } from "./controllers/metadataController";
+import {TestPageController} from "./controllers/testPageController.js";
 
-export const registerRoutes = (rootDir: string) => {
+export const registerRoutes = () => {
     const router = Router();
     router.get("/", IndexController.getIndex);
     router.get("/metadata", MetadataController.getMetadata);
     router.get("/tile/:dataset/:level/:z/:x/:y", TileController.getTile);
-    router.get("/test", (_, res) => {
-        res.sendFile(`${rootDir}/pages/test.html`);
-    });
+    router.get("/test", TestPageController.getTestPage);
 
     // provide an endpoint we can use to test 500 response behaviour by throwing an "unexpected error" - but only if we
     // are running in a non-production mode indicated by an env var
