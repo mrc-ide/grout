@@ -3,7 +3,7 @@ import { IndexController } from "./controllers/indexController";
 import { TileController } from "./controllers/tileController";
 import notFound from "./errors/notFound";
 import { MetadataController } from "./controllers/metadataController";
-import {TestPageController} from "./controllers/testPageController.js";
+import { TestPageController } from "./controllers/testPageController.js";
 
 export const registerRoutes = () => {
     const router = Router();

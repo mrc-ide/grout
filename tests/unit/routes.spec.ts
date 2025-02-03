@@ -4,6 +4,7 @@ import { IndexController } from "../../src/controllers/indexController";
 import { TileController } from "../../src/controllers/tileController";
 import notFound from "../../src/errors/notFound";
 import { MetadataController } from "../../src/controllers/metadataController";
+import { TestPageController } from "../../src/controllers/testPageController";
 
 const { mockRouterConstructor, mockRouter } = vi.hoisted(() => {
     const mockRouter = {
@@ -37,6 +38,11 @@ describe("registerRoutes", () => {
             3,
             "/tile/:dataset/:level/:z/:x/:y",
             TileController.getTile
+        );
+        expect(mockRouter.get).toHaveBeenNthCalledWith(
+            4,
+            "/test",
+            TestPageController.getTestPage
         );
         expect(mockRouter.use).toHaveBeenCalledWith(notFound);
     });
