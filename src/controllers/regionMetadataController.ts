@@ -1,11 +1,16 @@
 import {NextFunction, Request, Response} from "express";
 import {AppLocals} from "../types/app.js";
 import * as path from "node:path";
-import {readFileSync} from "node:fs";
+import {existsSync, readFileSync} from "node:fs";
 import {jsonResponseSuccess} from "../jsonResponse.js";
+import {GroutError} from "../errors/groutError.js";
+import {ErrorType} from "../errors/errorType.js";
 
 const readJsonFile = (rootDir: string, dataset: string, level: string, filename: string) =>  {
   const filePath = path.join(rootDir, "region_metadata", dataset, level, filename);
+  if (!existsSync(filePath)) {
+      throw new GroutError(`Region metadata not found`, ErrorType.NOT_FOUND);
+  }
   return JSON.parse(readFileSync(filePath, "utf-8"));
 }
 
@@ -31,8 +36,9 @@ export class RegionMetadataController {
     ) => {
         const { rootDir } = req.app.locals as AppLocals;
         const { dataset, iso, level } = req.params;
-        // TODO: check level is 1 or 2
-        // TODO: deal with non-existent file
+        if (!["1", "2"].includes(level)) {
+            throw new GroutError(`Level ${level} is not supported`, ErrorType.BAD_REQUEST);
+        }
         const json = readJsonFile(rootDir, dataset, level, `${dataset}_${iso}_${level}.json`);
         jsonResponseSuccess(json, res);
     }
