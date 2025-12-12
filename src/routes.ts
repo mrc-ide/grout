@@ -12,7 +12,7 @@ export const registerRoutes = () => {
     router.get("/metadata", MetadataController.getMetadata);
     router.get("/tile/:dataset/:level/:z/:x/:y", TileController.getTile);
     router.get(
-        "/region-metadata/:dataset/0",
+        "/region-metadata/:dataset/admin0",
         RegionMetadataController.getLevel0Metadata
     );
     router.get(

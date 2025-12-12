@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import * as path from "node:path";
 import { TileDatabase } from "../db/tileDatabase";
-import { TileDataset } from "../types/app";
+import { GroutDatasetMetadata, TileDataset } from "../types/app";
 import { Dict } from "../types/utils";
 
 export const discoverTileDatasets = async (
@@ -40,4 +40,10 @@ export const discoverTileDatasets = async (
         result[folder] = datasetDbs;
     }
     return result;
+};
+
+export const discoverRegionMetadata = (
+    root: string
+): Dict<GroutDatasetMetadata> => {
+    return {};
 };

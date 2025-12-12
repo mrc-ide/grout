@@ -4,7 +4,7 @@ import { getData, grout } from "./integrationTest";
 describe("region metadata endpoints", () => {
     test("returns global level 0 metadata", async () => {
         const data = await getData(
-            "/region-metadata/gadm41/0",
+            "/region-metadata/gadm41/admin0",
             "RegionMetadata"
         );
         expect(data.length).toBe(247);
@@ -16,7 +16,7 @@ describe("region metadata endpoints", () => {
 
     test("returns country level 1 metadata", async () => {
         const data = await getData(
-            "/region-metadata/gadm41/1/FRA",
+            "/region-metadata/gadm41/admin1/FRA",
             "RegionMetadata"
         );
         const first = data[0];

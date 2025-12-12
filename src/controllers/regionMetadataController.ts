@@ -35,7 +35,7 @@ export class RegionMetadataController {
         const json = readJsonFile(
             rootDir,
             dataset,
-            "0",
+            "admin0",
             "region_metadata_0.json"
         );
         jsonResponseSuccess(json, res);
@@ -44,11 +44,12 @@ export class RegionMetadataController {
     static getCountryMetadata = (req: Request, res: Response) => {
         const { rootDir } = req.app.locals as AppLocals;
         const { dataset, iso, level } = req.params;
+        const levelNumber = level.replace("admin", "");
         const json = readJsonFile(
             rootDir,
             dataset,
             level,
-            `region_metadata_${iso}_${level}.json`
+            `region_metadata_${iso}_${levelNumber}.json`
         );
         jsonResponseSuccess(json, res);
     };

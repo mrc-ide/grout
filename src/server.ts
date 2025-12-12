@@ -7,7 +7,10 @@ import { ConfigReader } from "./server/configReader";
 import { GroutConfig } from "./types/app";
 import { registerRoutes } from "./routes";
 import { initialiseLogging } from "./logging";
-import { discoverTileDatasets } from "./server/discover";
+import {
+    discoverTileDatasets,
+    discoverRegionMetadata
+} from "./server/discover";
 import { handleError } from "./errors/handleError";
 import { buildMetadata } from "./server/buildMetadata";
 
@@ -31,7 +34,11 @@ const tileDatasets = await discoverTileDatasets(
     path.resolve(path.join(rootDir, "data"))
 );
 
-const metadata = buildMetadata(tileDatasets);
+const regionMetadata = discoverRegionMetadata(
+    path.resolve(path.join(rootDir, "region_metadata"))
+);
+
+const metadata = buildMetadata(tileDatasets, regionMetadata);
 
 Object.assign(app.locals, {
     tileDatasets,

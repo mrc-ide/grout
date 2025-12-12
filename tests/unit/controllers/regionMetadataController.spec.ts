@@ -28,7 +28,7 @@ const writeTestFile = (folder: string, filename: string, contents: any) => {
 describe("RegionMetadataController", () => {
     test("returns level 0 metadata", () => {
         writeTestFile(
-            `/testRoot/region_metadata/${dataset}/0`,
+            `/testRoot/region_metadata/${dataset}/admin0`,
             "region_metadata_0.json",
             testMetadata
         );
@@ -56,7 +56,7 @@ describe("RegionMetadataController", () => {
 
     test("returns country metadata", () => {
         writeTestFile(
-            `/testRoot/region_metadata/${dataset}/2`,
+            `/testRoot/region_metadata/${dataset}/admin2`,
             "region_metadata_FRA_2.json",
             testMetadata
         );
@@ -69,7 +69,7 @@ describe("RegionMetadataController", () => {
             },
             params: {
                 dataset,
-                level: "2",
+                level: "admin2",
                 iso: "FRA"
             }
         } as any;

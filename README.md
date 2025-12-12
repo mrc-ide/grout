@@ -5,10 +5,11 @@ also provided
 ## Endpoints
 * Metadata about available datasets: `/metadata`
 * Tile data: `/tile/:dataset/:level/:z/:x/:y"`
-* Admin 0 (country) metadata for all countries in a dataset: `/region-metadata/:dataset/0`
+* Admin 0 (country) metadata for all countries in a dataset: `/region-metadata/:dataset/admin0`
 * Region metadata for a single country: `/region-metadata/:dataset/:level/:iso`
 
 Countries are identified by three letter ISO codes. 
+`:level` values are prefixed with "admin".
 
 ## Development
 
