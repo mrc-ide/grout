@@ -10,6 +10,11 @@ describe("metadata endpoint", () => {
                     gadm41: {
                         levels: ["admin0", "admin1"]
                     }
+                },
+                regionMetadata: {
+                    gadm41: {
+                        levels: ["admin0", "admin1"]
+                    }
                 }
             }
         });

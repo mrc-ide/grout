@@ -14,7 +14,8 @@ export const buildMetadata = (
     }
     return {
         datasets: {
-            tile: tileDatasetMetadata
+            tile: tileDatasetMetadata,
+            regionMetadata: regionMetadata
         }
     };
 };

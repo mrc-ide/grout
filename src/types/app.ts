@@ -12,7 +12,7 @@ export type GroutDatasetMetadata = {
     levels: string[];
 };
 
-export type DatasetTypes = "tile" | "region-metadata";
+export type DatasetTypes = "tile" | "regionMetadata";
 
 // Data type of metadata response - currently provides only the dataset names and levels for tile data, but will
 // eventually include other types of metadata

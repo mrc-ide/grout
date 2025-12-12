@@ -5,24 +5,28 @@
     "datasets": {
       "type": "object",
       "properties": {
-        "tile": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "object",
-            "properties": {
-              "levels": {
-                "type": "array",
-                "items": { "type": "string" }
-              }
-            },
-            "required": ["levels"]
-          }
-        }
+        "tile": { "$ref": "#/$defs/datasets" },
+        "regionMetadata": { "$ref": "#/$defs/datasets" }
       },
       "additionalProperties": false,
-      "required": ["tile"]
+      "required": ["tile", "regionMetadata"]
     }
   },
   "additionalProperties": false,
-  "required": ["datasets"]
+  "required": ["datasets"],
+  "$defs": {
+    "datasets": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "levels": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        },
+        "required": ["levels"]
+      }
+    }
+  }
 }

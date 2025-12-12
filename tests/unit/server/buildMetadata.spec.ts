@@ -18,7 +18,13 @@ describe("buildMetadata", () => {
                 }
             }
         } as any;
-        const result = buildMetadata(mockTileDatasets);
+
+        const mockRegionMetadata = {
+            ds1: ["admin0", "admin1"],
+            ds2: ["admin0", "admin1", "admin2"]
+        };
+
+        const result = buildMetadata(mockTileDatasets, mockRegionMetadata);
         expect(result).toStrictEqual({
             datasets: {
                 tile: {
@@ -28,7 +34,8 @@ describe("buildMetadata", () => {
                     ds2: {
                         levels: ["level2"]
                     }
-                }
+                },
+                regionMetadata: mockRegionMetadata
             }
         });
     });
