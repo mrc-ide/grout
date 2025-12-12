@@ -1,6 +1,6 @@
 import { describe, expect, test, vi, beforeEach } from "vitest";
 import { fs, vol } from "memfs";
-import { discoverTileDatasets } from "../../../src/server/discover";
+import { discoverTileDatasets, discoverRegionMetadata } from "../../../src/server/discover";
 
 // tell vitest to use fs mock from __mocks__ folder
 vi.mock("fs");
@@ -79,5 +79,24 @@ describe("discoverTileDatasets", () => {
         expect(result).toStrictEqual({});
         expect(consoleWarnSpy).toHaveBeenCalledWith("No tile datasets found!");
         expect(consoleLogSpy).not.toHaveBeenCalled();
+    });
+});
+
+describe("discoverRegionMetadata", async () => {
+    test("reads root folder and generates dataset metadata", () => {
+        // discoverRegionMetadata expects to find dataset names in the first level of subfolder,
+        // and level labels in the second
+        const ds1 = "dataset1";
+        const level0 = "admin0";
+        const level1 = "admin1";
+        fs.mkdirSync(`${dataRoot}/${ds1}/${level0}`, { recursive: true });
+        fs.mkdirSync(`${dataRoot}/${ds1}/${level1}`);
+        const ds2 = "dataset2";
+        fs.mkdirSync(`${dataRoot}/${ds2}/${level0}`, { recursive: true });
+        const result = discoverRegionMetadata(dataRoot);
+        expect(result).toStrictEqual({
+            dataset1: { levels: ["admin0", "admin1"] },
+            dataset2: { levels: ["admin0"] }
+        });
     });
 });
