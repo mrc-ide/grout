@@ -1,4 +1,4 @@
-import {Request, Response} from "express";
+import {NextFunction, Request, Response} from "express";
 import {AppLocals} from "../types/app.js";
 import * as path from "node:path";
 import {existsSync, readFileSync} from "node:fs";

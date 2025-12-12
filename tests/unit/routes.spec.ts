@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, test, vi } from "vitest";
 import { registerRoutes } from "../../src/routes";
 import { IndexController } from "../../src/controllers/indexController";
+import { RegionMetadataController } from "../../src/controllers/regionMetadataController";
 import { TileController } from "../../src/controllers/tileController";
 import notFound from "../../src/errors/notFound";
 import { MetadataController } from "../../src/controllers/metadataController";
@@ -41,6 +42,16 @@ describe("registerRoutes", () => {
         );
         expect(mockRouter.get).toHaveBeenNthCalledWith(
             4,
+            "/region-metadata/:dataset/0",
+            RegionMetadataController.getLevel0Metadata
+        );
+        expect(mockRouter.get).toHaveBeenNthCalledWith(
+            5,
+            "/region-metadata/:dataset/:level/:iso",
+            RegionMetadataController.getCountryMetadata
+        );
+        expect(mockRouter.get).toHaveBeenNthCalledWith(
+            6,
             "/test",
             TestPageController.getTestPage
         );
