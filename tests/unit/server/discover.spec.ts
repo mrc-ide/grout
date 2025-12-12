@@ -1,6 +1,9 @@
 import { describe, expect, test, vi, beforeEach } from "vitest";
 import { fs, vol } from "memfs";
-import { discoverTileDatasets, discoverRegionMetadata } from "../../../src/server/discover";
+import {
+    discoverTileDatasets,
+    discoverRegionMetadata
+} from "../../../src/server/discover";
 
 // tell vitest to use fs mock from __mocks__ folder
 vi.mock("fs");
