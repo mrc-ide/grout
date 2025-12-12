@@ -1,5 +1,15 @@
 # grout
-Grout serves map tiles (mbtiles) data which can be consumed in web front ends by Leaflet etc.
+Grout serves map tiles (mbtiles) data which can be consumed in web front ends by Leaflet etc. Useful region metadata is
+also provided
+
+## Endpoints
+
+* Tile data: `/tile/:dataset/:level/:z/:x/:y"`
+* Admin 0 (country) metadata for all countries in a dataset: `/region-metadata/:dataset/0`
+* Region metadata for a single country: `/region-metadata/:dataset/:level/:iso`
+
+Countries are identified by three letter ISO codes. 
+The only dataset currently supported is `gadm41` - region metadata for this dataset is available at levels 1 and 2. 
 
 ## Development
 
