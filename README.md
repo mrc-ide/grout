@@ -11,6 +11,9 @@ also provided
 Countries are identified by three letter ISO codes. 
 `:level` values are prefixed with "admin".
 
+NB There is only a single global endpoint for `admin0` region metadata, which provides level 0 metadata for all country
+ISOs. For all other levels, there are only country-specific endpoints, identified with the ISO.
+
 ## Development
 
 Grout is implemented as an [express](https://expressjs.com/) server in Typescript.
