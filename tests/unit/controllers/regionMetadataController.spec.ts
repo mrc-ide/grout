@@ -17,20 +17,20 @@ beforeEach(() => {
 });
 
 const dataset = "gadm41";
-const testMetadata = [{ id: "SW", name: "somewhere" }];
 
 const writeTestFile = (folder: string, filename: string, contents: any) => {
     const path = `${folder}/${filename}`;
     fs.mkdirSync(folder, { recursive: true });
-    fs.writeFileSync(path, JSON.stringify(testMetadata));
+    fs.writeFileSync(path, JSON.stringify(contents));
 };
 
 describe("RegionMetadataController", () => {
-    test("returns level 0 metadata", () => {
+    test("returns global level 0 metadata", () => {
+        const testLevel0Metadata = [{ id: "SC", name: "some country" }];
         writeTestFile(
             `/testRoot/data/region_metadata/${dataset}/admin0`,
             "region_metadata_0.json",
-            testMetadata
+            testLevel0Metadata
         );
 
         const mockReq = {
@@ -46,19 +46,20 @@ describe("RegionMetadataController", () => {
 
         const mockRes = {} as any;
 
-        RegionMetadataController.getLevel0Metadata(mockReq, mockRes);
+        RegionMetadataController.getGlobalLevel0Metadata(mockReq, mockRes);
 
         expect(mockJsonResponseSuccess).toHaveBeenCalledWith(
-            testMetadata,
+            testLevel0Metadata,
             mockRes
         );
     });
 
-    test("returns country metadata", () => {
+    test("returns metadata by request ISO", () => {
+        const testLevel2Metadata = [{ id: "SR", name: "some region" }];
         writeTestFile(
             `/testRoot/data/region_metadata/${dataset}/admin2`,
             "region_metadata_FRA_2.json",
-            testMetadata
+            testLevel2Metadata
         );
 
         const mockReq = {
@@ -76,10 +77,10 @@ describe("RegionMetadataController", () => {
 
         const mockRes = {} as any;
 
-        RegionMetadataController.getCountryMetadata(mockReq, mockRes);
+        RegionMetadataController.getMetadataByISO(mockReq, mockRes);
 
         expect(mockJsonResponseSuccess).toHaveBeenCalledWith(
-            testMetadata,
+            testLevel2Metadata,
             mockRes
         );
     });

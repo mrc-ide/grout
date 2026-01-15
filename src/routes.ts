@@ -13,11 +13,11 @@ export const registerRoutes = () => {
     router.get("/tile/:dataset/:level/:z/:x/:y", TileController.getTile);
     router.get(
         "/region-metadata/:dataset/admin0",
-        RegionMetadataController.getLevel0Metadata
+        RegionMetadataController.getGlobalLevel0Metadata
     );
     router.get(
         "/region-metadata/:dataset/:level/:iso",
-        RegionMetadataController.getCountryMetadata
+        RegionMetadataController.getMetadataByISO
     );
     router.get("/test", TestPageController.getTestPage);
 

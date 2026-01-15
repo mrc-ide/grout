@@ -30,7 +30,7 @@ const readJsonFile = (
 // All level 0 metadata should be concatenated in a single file named :dataset_0.json
 // Level 1 and level 2 metadata should be in one file per country iso named :dataset_:iso_:level.json
 export class RegionMetadataController {
-    static getLevel0Metadata = (req: Request, res: Response) => {
+    static getGlobalLevel0Metadata = (req: Request, res: Response) => {
         const { rootDir } = req.app.locals as AppLocals;
         const { dataset } = req.params;
         const json = readJsonFile(
@@ -42,7 +42,7 @@ export class RegionMetadataController {
         jsonResponseSuccess(json, res);
     };
 
-    static getCountryMetadata = (req: Request, res: Response) => {
+    static getMetadataByISO = (req: Request, res: Response) => {
         const { rootDir } = req.app.locals as AppLocals;
         const { dataset, iso, level } = req.params;
         const levelNumber = level.replace("admin", "");

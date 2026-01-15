@@ -43,12 +43,12 @@ describe("registerRoutes", () => {
         expect(mockRouter.get).toHaveBeenNthCalledWith(
             4,
             "/region-metadata/:dataset/admin0",
-            RegionMetadataController.getLevel0Metadata
+            RegionMetadataController.getGlobalLevel0Metadata
         );
         expect(mockRouter.get).toHaveBeenNthCalledWith(
             5,
             "/region-metadata/:dataset/:level/:iso",
-            RegionMetadataController.getCountryMetadata
+            RegionMetadataController.getMetadataByISO
         );
         expect(mockRouter.get).toHaveBeenNthCalledWith(
             6,
