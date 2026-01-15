@@ -31,11 +31,11 @@ const { port } = configReader.readConfigFile(
 ) as GroutConfig;
 
 const tileDatasets = await discoverTileDatasets(
-    path.resolve(path.join(rootDir, "data"))
+    path.resolve(path.join(rootDir, "data", "tile"))
 );
 
 const regionMetadata = discoverRegionMetadata(
-    path.resolve(path.join(rootDir, "region_metadata"))
+    path.resolve(path.join(rootDir, "data", "region_metadata"))
 );
 
 const metadata = buildMetadata(tileDatasets, regionMetadata);

@@ -14,6 +14,7 @@ const readJsonFile = (
 ) => {
     const filePath = path.join(
         rootDir,
+        "data",
         "region_metadata",
         dataset,
         level,

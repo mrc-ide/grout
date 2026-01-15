@@ -57,6 +57,7 @@ export const discoverRegionMetadata = (
     logDiscoveredDatasets("region metadata", datasets);
     const result = {};
     for (const dataset of datasets) {
+        console.log(dataset);
         // We expect to find a folder for each region metadata level under the dataset folder
         const levels = getSubfolders(path.join(root, dataset));
         result[dataset] = { levels };
