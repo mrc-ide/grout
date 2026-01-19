@@ -24,7 +24,12 @@ export default [
             "no-shadow": "off",
             "@typescript-eslint/no-shadow": ["off"],
             "no-underscore-dangle": "off",
-            "no-unused-vars": "off",
+            "no-unused-vars": [
+                "error",
+                {
+                    argsIgnorePattern: "_"
+                }
+            ],
             "@typescript-eslint/no-unused-vars": ["error"],
             "no-await-in-loop": "off",
             "no-useless-concat": "off",

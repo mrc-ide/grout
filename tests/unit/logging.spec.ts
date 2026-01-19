@@ -1,7 +1,7 @@
 import { describe, expect, test, vi } from "vitest";
 import { initialiseLogging } from "../../src/logging";
 
-const { mockMorganResult, mockMorgan, mockToken } = vi.hoisted(() => {
+const { mockMorganResult, mockMorgan } = vi.hoisted(() => {
     const mockMorganResult = { morgan: "mock result" };
     const mockMorgan = vi.fn().mockImplementation(() => mockMorganResult);
     const mockToken = vi.fn();
@@ -52,9 +52,9 @@ describe("initialiseLogging", () => {
             res: (req: any, res: any, name: string) =>
                 `${req.res}:${res.res}:${name}`,
             "response-time": (req: any, res: any) => `${req.time}:${res.time}`,
-            "error-type": (req: any, res: any) => req.errorType,
-            "error-detail": (req: any, res: any) => req.errorDetail,
-            "error-stack": (req: any, res: any) => req.errorStack
+            "error-type": (req: any, _: any) => req.errorType,
+            "error-detail": (req: any, _: any) => req.errorDetail,
+            "error-stack": (req: any, _: any) => req.errorStack
         };
 
         const expectedLog =

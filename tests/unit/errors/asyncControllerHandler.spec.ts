@@ -20,6 +20,7 @@ describe("asyncControllerHandler", () => {
     test("does not call next if no error thrown by controller method", async () => {
         const method = async () => {
             const s = 1 + 1;
+            console.log(s);
         };
         await asyncControllerHandler(mockNext, method);
         expect(mockNext).not.toHaveBeenCalled();
