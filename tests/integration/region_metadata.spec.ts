@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { getData, grout } from "./integrationTest";
+import { getData } from "./integrationTest";
 
 describe("region metadata endpoints", () => {
     test("returns global level 0 metadata", async () => {

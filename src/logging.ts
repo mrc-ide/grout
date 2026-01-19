@@ -15,7 +15,7 @@ export const initialiseLogging = (app: Application) => {
     morgan.token("error-stack", (req: RequestWithError) => req.errorStack);
 
     const customFormat = (
-        tokens: Dict<(req: Request, res?: Response, header?: string) => string>,
+        tokens: Dict<(_: Request, _?: Response, _?: string) => string>,
         req: Request,
         res: Response
     ) => {

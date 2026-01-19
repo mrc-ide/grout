@@ -1,4 +1,4 @@
-import { describe, expect, test, vi, beforeEach } from "vitest";
+import { describe, expect, test } from "vitest";
 import notFound from "../../../src/errors/notFound";
 import { ErrorType } from "../../../src/errors/errorType";
 

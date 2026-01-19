@@ -1,7 +1,6 @@
 import { describe, expect, test, vi, beforeEach } from "vitest";
 import { fs, vol } from "memfs";
 import * as jsonResponse from "../../../src/jsonResponse";
-import { jsonResponseSuccess } from "../../../src/jsonResponse";
 import { RegionMetadataController } from "../../../src/controllers/regionMetadataController";
 
 // tell vitest to use fs mock from __mocks__ folder

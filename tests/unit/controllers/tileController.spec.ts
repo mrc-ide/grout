@@ -15,7 +15,9 @@ const mockTileData = "some fake tile data";
 const mockDb = {
     getTileData: vi
         .fn()
-        .mockImplementation(async (z, x, y) => (z === 0 ? null : mockTileData))
+        .mockImplementation(async (z, _x, _y) =>
+            z === 0 ? null : mockTileData
+        )
 };
 const mockRequest = {
     params,
