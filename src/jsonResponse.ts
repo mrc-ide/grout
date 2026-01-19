@@ -4,7 +4,11 @@ const addContentType = (res: Response) => {
     res.header("Content-Type", "application/json");
 };
 
-export const jsonResponseSuccess = (data: object | string, res: Response) => {
+export const jsonResponseSuccess = (
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    data: object | string | Array<any>,
+    res: Response
+) => {
     addContentType(res);
     const responseObject = {
         status: "success",

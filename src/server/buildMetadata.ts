@@ -1,9 +1,10 @@
-import { GroutMetadata, TileDataset } from "../types/app";
+import { GroutDatasetMetadata, GroutMetadata, TileDataset } from "../types/app";
 import { Dict } from "../types/utils";
 
 // Build metadata response on start-up as it will not change while the app is running
 export const buildMetadata = (
-    tileDatasets: Dict<TileDataset>
+    tileDatasets: Dict<TileDataset>,
+    regionMetadata: Dict<GroutDatasetMetadata>
 ): GroutMetadata => {
     const tileDatasetMetadata = {};
     for (const datasetName of Object.keys(tileDatasets)) {
@@ -13,7 +14,8 @@ export const buildMetadata = (
     }
     return {
         datasets: {
-            tile: tileDatasetMetadata
+            tile: tileDatasetMetadata,
+            regionMetadata: regionMetadata
         }
     };
 };

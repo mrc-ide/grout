@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "array",
+  "items": {
+    "properties": {
+      "id": {
+        "type": "string"
+      },
+      "name": {
+        "type": "string"
+      },
+      "bounds": {
+        "type": "object",
+        "properties": {
+          "min": { "$ref": "#/$defs/lat-lng" },
+          "max": { "$ref": "#/$defs/lat-lng" }
+        },
+        "additionalProperties": false,
+        "required": [
+          "min",
+          "max"
+        ]
+      },
+      "geojson_properties": { "type": "object" }
+    },
+    "additionalProperties": false,
+    "required": [
+      "id",
+      "name",
+      "bounds",
+      "geojson_properties"
+    ]
+  },
+  "$defs": {
+    "lat-lng": {
+      "type": "object",
+      "properties": {
+        "lat": { "type": "number" },
+        "lng": { "type": "number" }
+      },
+      "additionalProperties": false,
+      "required": ["lat", "lng"]
+    }
+  }
+}

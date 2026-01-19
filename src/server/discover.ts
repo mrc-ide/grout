@@ -1,8 +1,23 @@
 import * as fs from "fs";
 import * as path from "node:path";
 import { TileDatabase } from "../db/tileDatabase";
-import { TileDataset } from "../types/app";
+import { GroutDatasetMetadata, TileDataset } from "../types/app";
 import { Dict } from "../types/utils";
+
+const getSubfolders = (root) => {
+    return fs
+        .readdirSync(root, { withFileTypes: true })
+        .filter((entry) => entry.isDirectory())
+        .map((entry) => entry.name);
+};
+
+const logDiscoveredDatasets = (datasetType: string, folders: string[]) => {
+    if (folders.length) {
+        console.log(`Found ${folders.length} ${datasetType} dataset(s):`);
+    } else {
+        console.warn(`No ${datasetType} datasets found!`);
+    }
+};
 
 export const discoverTileDatasets = async (
     root: string
@@ -11,16 +26,9 @@ export const discoverTileDatasets = async (
     // name (e.g. gadm41), and each *.mbtiles file contains data for an administrative level within that dataset,
     // with an appropriate filename (e.g. admin0.mbtiles). These names are the dataset and level identifiers
     // which should be used in urls to access the tile data (e.g. /tile/gadm41/admin0/1/1/1)
-    const folders = fs
-        .readdirSync(root, { withFileTypes: true })
-        .filter((entry) => entry.isDirectory())
-        .map((entry) => entry.name);
+    const folders = getSubfolders(root);
+    logDiscoveredDatasets("tile", folders);
 
-    if (folders.length) {
-        console.log(`Found ${folders.length} tile dataset(s):`);
-    } else {
-        console.warn("No tile datasets found!");
-    }
     const result = {};
     for (const folder of folders) {
         const datasetDbs = {};
@@ -38,6 +46,21 @@ export const discoverTileDatasets = async (
             console.log(`${folder}/${file}`);
         }
         result[folder] = datasetDbs;
+    }
+    return result;
+};
+
+export const discoverRegionMetadata = (
+    root: string
+): Dict<GroutDatasetMetadata> => {
+    const datasets = getSubfolders(root);
+    logDiscoveredDatasets("region metadata", datasets);
+    const result = {};
+    for (const dataset of datasets) {
+        console.log(dataset);
+        // We expect to find a folder for each region metadata level under the dataset folder
+        const levels = getSubfolders(path.join(root, dataset));
+        result[dataset] = { levels };
     }
     return result;
 };

@@ -1,11 +1,26 @@
 # grout
-Grout serves map tiles (mbtiles) data which can be consumed in web front ends by Leaflet etc.
+Grout serves map tiles (mbtiles) data which can be consumed in web front ends by Leaflet etc. Useful region metadata is
+also provided
+
+## Endpoints
+* Metadata about available datasets: `/metadata`
+* Tile data: `/tile/:dataset/:level/:z/:x/:y"`
+* Admin 0 (country) metadata for all countries in a dataset: `/region-metadata/:dataset/admin0`
+* Region metadata for a single country: `/region-metadata/:dataset/:level/:iso`
+
+Countries are identified by three letter ISO codes. 
+`:level` values are prefixed with "admin".
+
+NB There is only a single global endpoint for `admin0` region metadata, which provides level 0 metadata for all country
+ISOs. For all other levels, there are only country-specific endpoints, identified with the ISO.
 
 ## Development
 
 Grout is implemented as an [express](https://expressjs.com/) server in Typescript.
 
 Developed with node v22.
+
+For testing, a partial `gadm41` dataset is included with tile data and region metadata at levels 0 and 1.
 
 Run in dev mode with hot reloading managed by vite: `npm run dev`
 
