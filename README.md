@@ -31,7 +31,7 @@ Run in production mode: `npm run prod`
 In both modes, local run is on port 5000. Port is configured in `config/grout.config.json` (for running in production)
 and `vite.config.mts` (for running in dev mode).
 
-## Tests
+### Tests
 
 The server needs to be running for the integration tests to pass. 
 
@@ -42,7 +42,7 @@ Run tests with coverage using `npm run coverage`
 Manual testing can be done by viewing [test.html](static/test.html) in the browser. Here you can choose to view any available dataset on
 either a local grout server, or deployed to mrcdata. The page is available at the `/test` route of any running server. 
 
-# Lint
+### Lint
 
 Run lint with `npm run lint`. To do any possible automatic fixes run `npm run lint-fix`.
 
@@ -67,5 +67,8 @@ and expected data schema, and appends `$id: "grout-data` to the data schema befo
 long as there is only one loaded schema with that `$id`. 
 
 A better solution for dynamic nested schema would be to use `$dynamicRef`. However, a [longstanding bug](https://github.com/ajv-validator/ajv/issues/1573) 
-with `$dynamicRef` in Ajv prevents this.  
+with `$dynamicRef` in Ajv prevents this.
 
+## Deployment
+
+[grout-deploy](https://github.com/mrc-ide/grout-deploy) is our deployment tool for grout. This takes data from a configurable packit source and bind-mounts it over the partial dataset provided in this repo.
