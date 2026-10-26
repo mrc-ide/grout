@@ -17,14 +17,14 @@ jobs:
         run: |
           long_sha=${{ github.event.pull_request.head.sha }}
           echo "PR_HEAD_SHA=${long_sha:0:7}" >> $GITHUB_ENV
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
-          node-version: 22.x
+          node-version-file: .nvmrc
       - name: Install dependencies
         run: npm ci
       - name: Login to GHCR (GitHub Packages)
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -38,7 +38,7 @@ jobs:
       - name: Run unit and integration tests with coverage
         run: npm run coverage
       - name: Upload coverage
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v7
         with:
           fail_ci_if_error: true # optional (default = false)
           files: ./coverage/coverage-final.json
