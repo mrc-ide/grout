@@ -14,7 +14,7 @@
   },
   "type": "module",
   "engines": {
-    "node": ">=22.23.4"
+    "node": ">=22.23.4 <23"
   },
   "dependencies": {
     "compression": "^1.7.5",
